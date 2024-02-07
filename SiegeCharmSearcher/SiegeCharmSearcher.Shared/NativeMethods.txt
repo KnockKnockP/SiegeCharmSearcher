@@ -1,0 +1,4 @@
+﻿RECT
+
+EnumDisplaySettings
+SetForegroundWindow
