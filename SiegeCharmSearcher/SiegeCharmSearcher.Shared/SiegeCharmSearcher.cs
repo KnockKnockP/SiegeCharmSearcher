@@ -5,7 +5,7 @@ using Tesseract;
 namespace SiegeCharmSearcher.Shared {
     public class SiegeCharmSearcher {
         private readonly Process process;
-        public Resolution Resolution { get; private set; }
+        internal Resolution Resolution { get; private set; }
 
         private bool stopAnalyzing;
         private readonly TesseractEngine tesseractEngine = new("./tessdata-4.1.0", "eng", EngineMode.TesseractAndLstm);
@@ -111,22 +111,22 @@ namespace SiegeCharmSearcher.Shared {
         }
 
         //This is probably replacable with WH_JOURNALPLAYBACK but this will do for now.
-        public void SendW() {
+        internal void SendW() {
             WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
             Process.Start("./Scripts/W.exe").WaitForExit();
         }
 
-        public void SendA() {
+        internal void SendA() {
             WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
             Process.Start("./Scripts/A.exe").WaitForExit();
         }
 
-        public void SendS() {
+        internal void SendS() {
             WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
             Process.Start("./Scripts/S.exe").WaitForExit();
         }
 
-        public void SendD() {
+        internal void SendD() {
             WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
             Process.Start("./Scripts/D.exe").WaitForExit();
         }

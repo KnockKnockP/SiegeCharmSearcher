@@ -186,7 +186,6 @@
         private Button stopAnalyzingButton;
         private Label warningLabel;
         private Label charmNameLabel;
-        private VScrollBar verticalScrollbar;
         private ListBox charmsList0;
         private ListBox charmsList1;
         private ListBox charmsList2;
