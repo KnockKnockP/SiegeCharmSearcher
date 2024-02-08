@@ -3,8 +3,7 @@
 namespace SiegeCharmSearcher.Shared {
     public class Screenshot {
         public Bitmap image;
-        public string charmName = string.Empty;
-        public Vector2Int position = new(0, 0);
+        public Charm charm = new();
         private readonly Vector2Int startingPoint, endingPoint;
 
         public Screenshot(Resolution resolution) {

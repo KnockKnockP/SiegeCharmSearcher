@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Drawing;
 using Tesseract;
 
 namespace SiegeCharmSearcher.Shared {
@@ -9,50 +10,100 @@ namespace SiegeCharmSearcher.Shared {
         private bool stopAnalyzing;
         private readonly TesseractEngine tesseractEngine = new("./tessdata-4.1.0", "eng", EngineMode.TesseractAndLstm);
 
-        public readonly List<Screenshot> screenshots = [];
+        public readonly List<Charm> charms = [];
 
         public SiegeCharmSearcher() {
             process = WindowsWrapper.FindProcessOfNames([
-                "RainbowSix",
-                "RainbowSix_Vulkan"
+                "RainbowSix"
             ]);
             Resolution = WindowsWrapper.GetResolution();
         }
 
-        public void StartAnalyzing(IProgress<Screenshot> progress) {
-            screenshots.Clear();
-            WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
-
+        public void StartAnalyzing(IProgress<Bitmap> analyzingImage,
+                                   IProgress<string> warning,
+                                   IProgress<Charm> analyzedCharm) {
+            stopAnalyzing = false;
+            charms.Clear();
+            
             Vector2Int position = new(0, 0);
-            while (!stopAnalyzing) {
-                Screenshot screenshot = new(Resolution);
+            int retryCount = 0;
 
-                screenshot.Capture();
-                using Page page = tesseractEngine.Process(screenshot.image);
-                screenshot.charmName = page.GetText().TrimEnd('\n');
-                page.Dispose();
-                if (screenshot.charmName.Length == 0) {
+            void SelectNext() {
+                SendD();
+                Thread.Sleep(500);
+            }
+
+            void IncrementPosition() {
+                if (++position.x > 2) {
+                    position.x = 0;
+                    ++position.y;
+                }
+
+                SelectNext();
+            }
+
+            void AddCharm(Charm charm) {
+                charms.Add(charm);
+                analyzedCharm.Report(charm);
+            }
+
+            WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
+            while (true) {
+                if (stopAnalyzing) {
+                    warning.Report("Stopped anal.");
+                    break;
+                }
+
+                warning.Report("");
+
+                if (retryCount >= 5) {
+                    warning.Report("Skipping.");
+                    retryCount = 0;
+
+                    AddCharm(new Charm() {
+                        name = "(SKIPPED)",
+                        position = position
+                    });
+
+                    IncrementPosition();
+                    continue;
+                }
+
+                Screenshot screenshot = new(Resolution);
+                screenshot.charm.position = position;
+                bool success = AnalyzeCharmName(screenshot);
+                analyzingImage.Report(screenshot.image);
+
+                if (!success) {
+                    warning.Report($"Retry count: {retryCount++}");
                     Thread.Sleep(250);
                     continue;
                 }
 
-                if (screenshot.charmName.Equals("view more", StringComparison.CurrentCultureIgnoreCase)) {
-                    //remove past 5 entries.
-                    //break;
+                if (screenshot.charm.name.Equals("view more", StringComparison.CurrentCultureIgnoreCase)) {
+                    warning.Report("END OF IN GAME LIST");
+                    break;
                 }
 
-                screenshot.position = position;
+                retryCount = 0;
+                AddCharm(screenshot.charm);
 
-                screenshots.Add(screenshot);
-                progress.Report(screenshot);
-
-                if (position.x++ > 2) {
-                    position.x = 0;
-                    ++position.y;
-                }
-                SendD();
-                Thread.Sleep(200);
+                IncrementPosition();
             }
+        }
+
+        private bool AnalyzeCharmName(Screenshot screenshot) {
+            screenshot.Capture();
+            using Page page = tesseractEngine.Process(screenshot.image);
+
+            string charmName = page.GetText().RemoveAllCharactersInString("=[]\\;,./~!@#$%^&*()_+{}|:\"<>?[\n");
+            screenshot.charm.name = charmName;
+
+            page.Dispose();
+
+            return ((charmName.Length != 0) &&
+                    (!charmName.OnlyContains(' ')) &&
+                    ((charms.Count == 0) || (charmName != charms[^1].name)));
         }
 
         public void StopAnalyzing() {

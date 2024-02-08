@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiegeCharmSearcher.Shared", "SiegeCharmSearcher.Shared\SiegeCharmSearcher.Shared.csproj", "{3BBB43A5-8219-48B9-B7D9-EA92F5DEA422}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiegeCharmSearcher.Forms", "SiegeCharmSearcher.Forms\SiegeCharmSearcher.Forms.csproj", "{DE3F38C1-E887-4B4D-87AE-878BD2F6DD3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiegeCharmSearcher.Forms", "SiegeCharmSearcher.Forms\SiegeCharmSearcher.Forms.csproj", "{DE3F38C1-E887-4B4D-87AE-878BD2F6DD3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
