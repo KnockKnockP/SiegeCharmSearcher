@@ -58,260 +58,171 @@
             // 
             // screenshotDisplay
             // 
-            screenshotDisplay.Anchor = AnchorStyles.Top;
-            screenshotDisplay.Location = new Point(18, 27);
+            resources.ApplyResources(screenshotDisplay, "screenshotDisplay");
             screenshotDisplay.Name = "screenshotDisplay";
-            screenshotDisplay.Size = new Size(810, 60);
-            screenshotDisplay.SizeMode = PictureBoxSizeMode.StretchImage;
-            screenshotDisplay.TabIndex = 1;
             screenshotDisplay.TabStop = false;
             // 
             // analyzeButton
             // 
-            analyzeButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            analyzeButton.Location = new Point(666, 373);
+            resources.ApplyResources(analyzeButton, "analyzeButton");
             analyzeButton.Name = "analyzeButton";
-            analyzeButton.Size = new Size(75, 23);
-            analyzeButton.TabIndex = 2;
-            analyzeButton.Text = "Scan";
             analyzeButton.UseVisualStyleBackColor = true;
             analyzeButton.Click += AnalyzeButtonClick;
             // 
             // stopAnalyzingButton
             // 
-            stopAnalyzingButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            stopAnalyzingButton.Location = new Point(666, 344);
+            resources.ApplyResources(stopAnalyzingButton, "stopAnalyzingButton");
             stopAnalyzingButton.Name = "stopAnalyzingButton";
-            stopAnalyzingButton.Size = new Size(75, 23);
-            stopAnalyzingButton.TabIndex = 5;
-            stopAnalyzingButton.Text = "Stop";
             stopAnalyzingButton.UseVisualStyleBackColor = true;
             stopAnalyzingButton.Click += StopAnalyzingButtonClick;
             // 
             // charmsList0
             // 
-            charmsList0.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            resources.ApplyResources(charmsList0, "charmsList0");
             charmsList0.FormattingEnabled = true;
-            charmsList0.HorizontalScrollbar = true;
-            charmsList0.ItemHeight = 15;
-            charmsList0.Location = new Point(18, 93);
             charmsList0.Name = "charmsList0";
-            charmsList0.Size = new Size(156, 304);
-            charmsList0.TabIndex = 16;
             charmsList0.SelectedIndexChanged += CharmsListSelect;
             // 
             // charmsList1
             // 
-            charmsList1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            resources.ApplyResources(charmsList1, "charmsList1");
             charmsList1.FormattingEnabled = true;
-            charmsList1.HorizontalScrollbar = true;
-            charmsList1.ItemHeight = 15;
-            charmsList1.Location = new Point(180, 93);
             charmsList1.Name = "charmsList1";
-            charmsList1.Size = new Size(156, 304);
-            charmsList1.TabIndex = 17;
             charmsList1.SelectedIndexChanged += CharmsListSelect;
             // 
             // charmsList2
             // 
-            charmsList2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            resources.ApplyResources(charmsList2, "charmsList2");
             charmsList2.FormattingEnabled = true;
-            charmsList2.HorizontalScrollbar = true;
-            charmsList2.ItemHeight = 15;
-            charmsList2.Location = new Point(342, 93);
             charmsList2.Name = "charmsList2";
-            charmsList2.Size = new Size(156, 304);
-            charmsList2.TabIndex = 18;
             charmsList2.SelectedIndexChanged += CharmsListSelect;
             // 
             // searchBox
             // 
-            searchBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            searchBox.Location = new Point(504, 111);
+            resources.ApplyResources(searchBox, "searchBox");
             searchBox.Name = "searchBox";
-            searchBox.Size = new Size(156, 23);
-            searchBox.TabIndex = 19;
             searchBox.TextChanged += SearchBoxChanged;
             // 
             // resultsList
             // 
-            resultsList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            resources.ApplyResources(resultsList, "resultsList");
             resultsList.FormattingEnabled = true;
-            resultsList.HorizontalScrollbar = true;
-            resultsList.ItemHeight = 15;
-            resultsList.Location = new Point(504, 137);
             resultsList.Name = "resultsList";
-            resultsList.Size = new Size(156, 259);
-            resultsList.TabIndex = 20;
             resultsList.SelectedIndexChanged += CharmsListSelect;
             // 
             // navigateButton
             // 
-            navigateButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            navigateButton.Location = new Point(747, 373);
+            resources.ApplyResources(navigateButton, "navigateButton");
             navigateButton.Name = "navigateButton";
-            navigateButton.Size = new Size(75, 23);
-            navigateButton.TabIndex = 22;
-            navigateButton.Text = "Navigate";
             navigateButton.UseVisualStyleBackColor = true;
             navigateButton.Click += NavigateButtonClick;
             // 
             // statusStrip
             // 
             statusStrip.Items.AddRange(new ToolStripItem[] { analyzingProgressBar, statusLabel, r6Text });
-            statusStrip.Location = new Point(0, 399);
+            resources.ApplyResources(statusStrip, "statusStrip");
             statusStrip.Name = "statusStrip";
-            statusStrip.Size = new Size(844, 22);
-            statusStrip.TabIndex = 24;
-            statusStrip.Text = "statusStrip";
             // 
             // analyzingProgressBar
             // 
             analyzingProgressBar.Name = "analyzingProgressBar";
-            analyzingProgressBar.Size = new Size(100, 16);
+            resources.ApplyResources(analyzingProgressBar, "analyzingProgressBar");
             analyzingProgressBar.Style = ProgressBarStyle.Continuous;
             // 
             // statusLabel
             // 
             statusLabel.Name = "statusLabel";
-            statusLabel.Size = new Size(363, 17);
+            resources.ApplyResources(statusLabel, "statusLabel");
             statusLabel.Spring = true;
-            statusLabel.Text = "Status";
-            statusLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // r6Text
             // 
             r6Text.Name = "r6Text";
-            r6Text.Size = new Size(363, 17);
+            resources.ApplyResources(r6Text, "r6Text");
             r6Text.Spring = true;
-            r6Text.Text = "Made with love and hatred of R6.";
-            r6Text.TextAlign = ContentAlignment.MiddleRight;
             // 
             // menuStrip
             // 
             menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
-            menuStrip.Location = new Point(0, 0);
+            resources.ApplyResources(menuStrip, "menuStrip");
             menuStrip.Name = "menuStrip";
-            menuStrip.Size = new Size(844, 24);
-            menuStrip.TabIndex = 25;
-            menuStrip.Text = "menuStrip";
             // 
             // fileToolStripMenuItem
             // 
             fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveToolStripMenuItem, loadToolStripMenuItem, exitToolStripMenuItem, exitToolStripMenuItem1 });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new Size(37, 20);
-            fileToolStripMenuItem.Text = "File";
+            resources.ApplyResources(fileToolStripMenuItem, "fileToolStripMenuItem");
             // 
             // saveToolStripMenuItem
             // 
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            saveToolStripMenuItem.Size = new Size(180, 22);
-            saveToolStripMenuItem.Text = "Save";
+            resources.ApplyResources(saveToolStripMenuItem, "saveToolStripMenuItem");
             saveToolStripMenuItem.Click += SaveButtonClick;
             // 
             // loadToolStripMenuItem
             // 
             loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            loadToolStripMenuItem.Size = new Size(180, 22);
-            loadToolStripMenuItem.Text = "Load";
+            resources.ApplyResources(loadToolStripMenuItem, "loadToolStripMenuItem");
             loadToolStripMenuItem.Click += LoadButtonClick;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(180, 22);
-            exitToolStripMenuItem.Text = "Settings";
+            resources.ApplyResources(exitToolStripMenuItem, "exitToolStripMenuItem");
             exitToolStripMenuItem.Click += SettingsMenuButtonClick;
             // 
             // exitToolStripMenuItem1
             // 
             exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            exitToolStripMenuItem1.Size = new Size(180, 22);
-            exitToolStripMenuItem1.Text = "Exit";
+            resources.ApplyResources(exitToolStripMenuItem1, "exitToolStripMenuItem1");
             exitToolStripMenuItem1.Click += ExitButtonClick;
             // 
             // charmNameInputBox
             // 
-            charmNameInputBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            charmNameInputBox.Location = new Point(666, 111);
+            resources.ApplyResources(charmNameInputBox, "charmNameInputBox");
             charmNameInputBox.Name = "charmNameInputBox";
-            charmNameInputBox.Size = new Size(162, 23);
-            charmNameInputBox.TabIndex = 26;
             // 
             // xLabel
             // 
-            xLabel.AutoSize = true;
-            xLabel.Location = new Point(693, 140);
+            resources.ApplyResources(xLabel, "xLabel");
             xLabel.Name = "xLabel";
-            xLabel.Size = new Size(14, 15);
-            xLabel.TabIndex = 27;
-            xLabel.Text = "X";
-            xLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // yLabel
             // 
-            yLabel.AutoSize = true;
-            yLabel.Location = new Point(780, 140);
+            resources.ApplyResources(yLabel, "yLabel");
             yLabel.Name = "yLabel";
-            yLabel.Size = new Size(14, 15);
-            yLabel.TabIndex = 28;
-            yLabel.Text = "Y";
-            yLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // xInputBox
             // 
-            xInputBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            xInputBox.Location = new Point(666, 158);
+            resources.ApplyResources(xInputBox, "xInputBox");
             xInputBox.Name = "xInputBox";
-            xInputBox.Size = new Size(75, 23);
-            xInputBox.TabIndex = 29;
             // 
             // yInputBox
             // 
-            yInputBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            yInputBox.Location = new Point(753, 158);
+            resources.ApplyResources(yInputBox, "yInputBox");
             yInputBox.Name = "yInputBox";
-            yInputBox.Size = new Size(75, 23);
-            yInputBox.TabIndex = 30;
             // 
             // searchLabel
             // 
-            searchLabel.AutoSize = true;
-            searchLabel.Location = new Point(558, 93);
+            resources.ApplyResources(searchLabel, "searchLabel");
             searchLabel.Name = "searchLabel";
-            searchLabel.Size = new Size(42, 15);
-            searchLabel.TabIndex = 31;
-            searchLabel.Text = "Search";
-            searchLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // selectedCharmLabel
             // 
-            selectedCharmLabel.AutoSize = true;
-            selectedCharmLabel.Location = new Point(703, 93);
+            resources.ApplyResources(selectedCharmLabel, "selectedCharmLabel");
             selectedCharmLabel.Name = "selectedCharmLabel";
-            selectedCharmLabel.Size = new Size(90, 15);
-            selectedCharmLabel.TabIndex = 32;
-            selectedCharmLabel.Text = "Selected Charm";
-            selectedCharmLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // applyButton
             // 
-            applyButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            applyButton.Location = new Point(747, 344);
+            resources.ApplyResources(applyButton, "applyButton");
             applyButton.Name = "applyButton";
-            applyButton.Size = new Size(75, 23);
-            applyButton.TabIndex = 34;
-            applyButton.Text = "Apply";
             applyButton.UseVisualStyleBackColor = true;
             applyButton.Click += ApplyButtonClick;
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(844, 421);
             Controls.Add(applyButton);
             Controls.Add(selectedCharmLabel);
             Controls.Add(searchLabel);
@@ -331,11 +242,8 @@
             Controls.Add(stopAnalyzingButton);
             Controls.Add(analyzeButton);
             Controls.Add(screenshotDisplay);
-            Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip;
-            MinimumSize = new Size(860, 460);
             Name = "MainForm";
-            Text = "Siege Charm Searcher";
             FormClosing += FormClosingPrompt;
             ((System.ComponentModel.ISupportInitialize)screenshotDisplay).EndInit();
             statusStrip.ResumeLayout(false);

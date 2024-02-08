@@ -71,25 +71,25 @@ namespace SiegeCharmSearcher.Shared {
             }
 
             AddCharm(new Charm() {
-                name = "None",
+                name = Messages.NoneCharm,
             });
             IncrementPosition();
 
             WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
             while (true) {
                 if (stopAnalyzing) {
-                    status.Report("Stopped analyzing.");
+                    status.Report(Messages.StoppedAnalyzing);
                     break;
                 }
 
                 status.Report(string.Empty);
 
                 if (retryCount >= 5) {
-                    status.Report("Skipping.");
+                    status.Report(Messages.Skipping);
                     retryCount = 0;
 
                     AddCharm(new Charm() {
-                        name = "(SKIPPED)",
+                        name = Messages.SkippedCharm,
                         position = position
                     });
 
@@ -103,14 +103,9 @@ namespace SiegeCharmSearcher.Shared {
                 analyzingImage.Report(screenshot.image);
 
                 if (!success) {
-                    status.Report($"Retry count: {retryCount++}");
+                    status.Report(string.Format(Messages.RetryCount, retryCount++));
                     Thread.Sleep(settings.delay);
                     continue;
-                }
-
-                if (screenshot.charm.name.Equals("view more", StringComparison.CurrentCultureIgnoreCase)) {
-                    status.Report("END OF IN GAME LIST");
-                    break;
                 }
 
                 retryCount = 0;
@@ -141,7 +136,7 @@ namespace SiegeCharmSearcher.Shared {
         }
 
         public void NavigateTo(Charm charm, IProgress<string> status) {
-            status.Report($"Navigating to {charm.position}.");
+            status.Report(string.Format(Messages.NavigatingTo, charm.position));
 
             WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
             Screenshot screenshot = new(settings.resolution);
@@ -155,20 +150,20 @@ namespace SiegeCharmSearcher.Shared {
                         break;
                     }
                 }
-                //foundCharm = charms.Find(charm => charm.name == screenshot.charm.name);
+
                 if (!AnalyzeCharmName(screenshot) || (foundCharm == null)) {
-                    status.Report($"Retry count: {retryCount++}");
+                    status.Report(string.Format(Messages.RetryCount, retryCount++));
                     Thread.Sleep(settings.delay);
                     continue;
                 }
 
-                status.Report($"Standing on {foundCharm.name} {foundCharm.position}.");
+                status.Report(string.Format(Messages.StandingOn, foundCharm.name, foundCharm.position));
                 break;
             }
 
             Vector2Int target = charm.position, current = foundCharm.position;
             if (target == current) {
-                status.Report("Already on the selected charm.");
+                status.Report(Messages.AlreadySamePlace);
                 return;
             }
 
@@ -192,7 +187,7 @@ namespace SiegeCharmSearcher.Shared {
                 }
             }
 
-            status.Report($"Navigation done. {target} {current}");
+            status.Report(Messages.NavigationDone);
         }
 
         //This is probably replacable with WH_JOURNALPLAYBACK but this will do for now.

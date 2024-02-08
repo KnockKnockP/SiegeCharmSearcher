@@ -1,4 +1,5 @@
 using SiegeCharmSearcher.Shared;
+using System.Globalization;
 
 namespace SiegeCharmSearcher.Forms {
     public partial class MainForm : Form {
@@ -59,7 +60,7 @@ namespace SiegeCharmSearcher.Forms {
 
             ClearCharms();
 
-            statusLabel.Text = "Starting analyzation.";
+            statusLabel.Text = Messages.StartingAnalyzation;
             await Task.Factory.StartNew(() => {
                 siegeCharmSearcher.StartAnalyzing(analyzingImage,
                                                   status,
@@ -117,7 +118,7 @@ namespace SiegeCharmSearcher.Forms {
 
         private async void NavigateButtonClick(object sender, EventArgs eventArgs) {
             if (SelectedCharm == null) {
-                statusLabel.Text = "No charm has been selected.";
+                statusLabel.Text = Messages.NavigateNoCharmSelected;
                 return;
             }
 
@@ -130,7 +131,7 @@ namespace SiegeCharmSearcher.Forms {
         private void SaveButtonClick(object sender, EventArgs eventArgs) {
             SaveFileDialog saveFileDialog = new() {
                 Filter = fileDialogFilter,
-                Title = "Save Charms",
+                Title = Messages.SaveCharms,
                 RestoreDirectory = true
             };
             saveFileDialog.ShowDialog();
@@ -145,7 +146,7 @@ namespace SiegeCharmSearcher.Forms {
         private void LoadButtonClick(object sender, EventArgs eventArgs) {
             OpenFileDialog openFileDialog = new() {
                 Filter = fileDialogFilter,
-                Title = "Load Charms",
+                Title = Messages.LoadCharms,
                 RestoreDirectory = true
             };
             openFileDialog.ShowDialog();
@@ -192,8 +193,8 @@ namespace SiegeCharmSearcher.Forms {
                 return;
             }
 
-            DialogResult dialogResult = MessageBox.Show("Would you like to save before exiting?",
-                                                        "Unsaved Work",
+            DialogResult dialogResult = MessageBox.Show(Messages.ExitSavePrompt,
+                                                        Messages.ExitSaveTitle,
                                                         MessageBoxButtons.YesNo,
                                                         MessageBoxIcon.Warning,
                                                         MessageBoxDefaultButton.Button1);
@@ -205,12 +206,8 @@ namespace SiegeCharmSearcher.Forms {
 }
 
 //TODO:
-//add settings menu.
-//add custom resolution setting.
-//add custom aspect ratio setting.
 //add readme
 
-//localization
 //check ownership of skins.
 //disable battleeye
 //remove vulkan support
