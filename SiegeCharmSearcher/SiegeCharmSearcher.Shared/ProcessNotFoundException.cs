@@ -1,9 +1,9 @@
 ﻿namespace SiegeCharmSearcher.Shared {
-    internal class ProcessNotFoundException : Exception {
-        internal ProcessNotFoundException() {}
+    public class ProcessNotFoundException : Exception {
+        public ProcessNotFoundException() {}
 
-        internal ProcessNotFoundException(string message) : base(message) {}
+        public ProcessNotFoundException(string message) : base(message) {}
 
-        internal ProcessNotFoundException(string message, Exception innerException) : base(message, innerException) {}
+        public ProcessNotFoundException(string message, Exception innerException) : base(message, innerException) {}
     }
 }

@@ -1,5 +1,4 @@
 using SiegeCharmSearcher.Shared;
-using System.Globalization;
 
 namespace SiegeCharmSearcher.Forms {
     public partial class MainForm : Form {
@@ -27,11 +26,37 @@ namespace SiegeCharmSearcher.Forms {
         public MainForm() {
             InitializeComponent();
 
-            siegeCharmSearcher = new Shared.SiegeCharmSearcher();
+            try {
+                siegeCharmSearcher = new Shared.SiegeCharmSearcher();
+            } catch (ProcessNotFoundException) {
+                MessageBox.Show(Messages.R6NotFoundContent,
+                                Messages.R6NotFoundTitle,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Environment.Exit(0);
+            } catch (VulkanNotSupportedException) {
+                MessageBox.Show(Messages.VulkanUnsupportedContent,
+                                Messages.VulkanUnsupportedTitle,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                Environment.Exit(0);
+            }
+
+            if (!siegeCharmSearcher.settings.hasSeenHelp) {
+                DisplayHelp();
+            }
 
             charmsLists[0] = charmsList0;
             charmsLists[1] = charmsList1;
             charmsLists[2] = charmsList2;
+        }
+
+        private void DisplayHelp() {
+            siegeCharmSearcher.settings.hasSeenHelp = true;
+            siegeCharmSearcher.SaveSettings();
+
+            HelpForm helpForm = new();
+            helpForm.ShowDialog();
         }
 
         private void AddCharm(Charm charm) {
@@ -51,26 +76,31 @@ namespace SiegeCharmSearcher.Forms {
         }
 
         private async void AnalyzeButtonClick(object sender, EventArgs eventArgs) {
-            IProgress<Bitmap> analyzingImage = new Progress<Bitmap>(bitmap => screenshotDisplay.Image = bitmap);
-            IProgress<string> status = new Progress<string>(s => statusLabel.Text = s);
-            IProgress<Charm> analyzedCharm = new Progress<Charm>(AddCharm);
-            IProgress<bool> enableProgressBar = new Progress<bool>(enable => {
-                analyzingProgressBar.Style = (enable ? ProgressBarStyle.Marquee : ProgressBarStyle.Continuous);
-            });
+            if (siegeCharmSearcher.analyzing) {
+                siegeCharmSearcher.analyzing = false;
+            } else {
+                analyzeButton.Text = Messages.Stop;
+                analyzingProgressBar.Style = ProgressBarStyle.Marquee;
+                statusLabel.Text = Messages.StartingAnalyzation;
+                ClearCharms();
 
-            ClearCharms();
+                IProgress<Bitmap> analyzingNameImage = new Progress<Bitmap>(bitmap => screenshotDisplay.Image = bitmap),
+                                  analyzingOwnedImage = new Progress<Bitmap>(bitmap => ownedImageDisplay.Image = bitmap);
+                IProgress<Color> analyzingPresentColor = new Progress<Color>(color => presentImageDisplay.BackColor = color);
+                IProgress<string> status = new Progress<string>(s => statusLabel.Text = s);
+                IProgress<Charm> analyzedCharm = new Progress<Charm>(AddCharm);
 
-            statusLabel.Text = Messages.StartingAnalyzation;
-            await Task.Factory.StartNew(() => {
-                siegeCharmSearcher.StartAnalyzing(analyzingImage,
-                                                  status,
-                                                  analyzedCharm,
-                                                  enableProgressBar);
-            });
-        }
+                await Task.Factory.StartNew(() => {
+                    siegeCharmSearcher.StartAnalyzing(analyzingNameImage,
+                                                      analyzingOwnedImage,
+                                                      analyzingPresentColor,
+                                                      status,
+                                                      analyzedCharm);
+                });
 
-        private void StopAnalyzingButtonClick(object sender, EventArgs eventArgs) {
-            siegeCharmSearcher.StopAnalyzing();
+                analyzeButton.Text = Messages.Scan;
+                analyzingProgressBar.Style = ProgressBarStyle.Continuous;
+            }
         }
 
         private void CharmsListSelect(object sender, EventArgs eventArgs) {
@@ -122,10 +152,20 @@ namespace SiegeCharmSearcher.Forms {
                 return;
             }
 
-            IProgress<string> status = new Progress<string>(s => statusLabel.Text = s);
-            await Task.Factory.StartNew(() => {
-                siegeCharmSearcher.NavigateTo(SelectedCharm, status);
-            });
+            if (siegeCharmSearcher.navigating) {
+                siegeCharmSearcher.navigating = false;
+            } else {
+                navigateButton.Text = Messages.Stop;
+                analyzingProgressBar.Style = ProgressBarStyle.Marquee;
+
+                IProgress<string> status = new Progress<string>(s => statusLabel.Text = s);
+                await Task.Factory.StartNew(() => {
+                    siegeCharmSearcher.NavigateTo(SelectedCharm, status);
+                });
+
+                navigateButton.Text = Messages.Navigate;
+                analyzingProgressBar.Style = ProgressBarStyle.Continuous;
+            }
         }
 
         private void SaveButtonClick(object sender, EventArgs eventArgs) {
@@ -184,6 +224,8 @@ namespace SiegeCharmSearcher.Forms {
             settingsMenuForm.ShowDialog();
         }
 
+        private void ShowHelpButtonClicked(object sender, EventArgs eventArgs) => DisplayHelp();
+
         private void ExitButtonClick(object sender, EventArgs eventArgs) {
             Application.Exit();
         }
@@ -204,10 +246,3 @@ namespace SiegeCharmSearcher.Forms {
         }
     }
 }
-
-//TODO:
-//add readme
-
-//check ownership of skins.
-//disable battleeye
-//remove vulkan support

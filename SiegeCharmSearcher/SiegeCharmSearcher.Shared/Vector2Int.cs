@@ -7,6 +7,10 @@
             y /= relativeTo.y;
         }
 
+        public static Vector2Int operator -(Vector2Int left, Vector2Int right) {
+            return new((left.x - right.x), (left.y - right.y));
+        }
+
         public static bool operator ==(Vector2Int left, Vector2Int right) {
             return ((left.x == right.x) && (left.y == right.y));
         }

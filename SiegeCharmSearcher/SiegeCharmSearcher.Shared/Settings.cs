@@ -4,6 +4,7 @@ namespace SiegeCharmSearcher.Shared {
     public class Settings {
         public Resolution resolution = new(new Vector2Int(1920, 1080), 60, AspectRatio._169);
         public int delay = 500;
+        public bool hasSeenHelp = false;
 
         public string SerializeAsJson() {
             return JsonConvert.SerializeObject(this);
@@ -13,6 +14,7 @@ namespace SiegeCharmSearcher.Shared {
             Settings? settings = JsonConvert.DeserializeObject<Settings>(json) ?? throw new BadSaveFileException();
             resolution = settings.resolution;
             delay = settings.delay;
+            hasSeenHelp = settings.hasSeenHelp;
         }
     }
 }

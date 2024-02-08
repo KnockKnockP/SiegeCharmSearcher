@@ -117,75 +117,118 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="analyzeButton.Text" xml:space="preserve">
-    <value>스캔</value>
-  </data>
-  <data name="stopAnalyzingButton.Text" xml:space="preserve">
-    <value>중지</value>
-  </data>
-  <data name="navigateButton.Text" xml:space="preserve">
-    <value>이동하기</value>
-  </data>
-  <data name="statusLabel.Text" xml:space="preserve">
-    <value>상태</value>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="helpLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 20</value>
+  <data name="helpLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 12pt</value>
   </data>
-  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
-    <value>파일</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="helpLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="saveToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 22</value>
+  <data name="helpLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 9</value>
   </data>
-  <data name="saveToolStripMenuItem.Text" xml:space="preserve">
-    <value>저장</value>
+  <data name="helpLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>761, 252</value>
   </data>
-  <data name="loadToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 22</value>
+  <data name="helpLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="loadToolStripMenuItem.Text" xml:space="preserve">
-    <value>불러오기</value>
+  <data name="helpLabel.Text" xml:space="preserve">
+    <value>This program uses AutoHotKey to navigate through charms, making it not 100% safe from bans.
+If you're concerned, please exit this program using the button at the bottom.
+You have been warned and the author is not responsible for any bans resulting from the use of this program.
+
+Before starting the scan, you need to syncronize in-game settings with the program:
+1. Set the game to borderless.
+2. Remember your resolution and in-game aspect ratio.
+3. After exiting this help page, go to File-&gt;Settings in the top-right corner and syncronize both values.
+
+To start scanning, go to your charms page and set the selected charm to "None" (the very first option).
+Press "Scan" and wait until it finishes. You can stop it early by pressing "Stop".
+Scanning will completely remove your charms list. To keep it, save it by going to File-&gt;Save.</value>
   </data>
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 22</value>
+  <data name="&gt;&gt;helpLabel.Name" xml:space="preserve">
+    <value>helpLabel</value>
   </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>설정</value>
+  <data name="&gt;&gt;helpLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="helpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 22</value>
+  <data name="&gt;&gt;helpLabel.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="helpToolStripMenuItem.Text" xml:space="preserve">
-    <value>도움말</value>
+  <data name="&gt;&gt;helpLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
-  <data name="exitToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 22</value>
+  <data name="okButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="exitToolStripMenuItem1.Text" xml:space="preserve">
-    <value>종료</value>
+  <data name="okButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>312, 264</value>
   </data>
-  <data name="searchLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>565, 93</value>
+  <data name="okButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
   </data>
-  <data name="searchLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>31, 15</value>
+  <data name="okButton.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="searchLabel.Text" xml:space="preserve">
-    <value>검색</value>
+  <data name="okButton.Text" xml:space="preserve">
+    <value>OK</value>
   </data>
-  <data name="selectedCharmLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>711, 93</value>
+  <data name="&gt;&gt;okButton.Name" xml:space="preserve">
+    <value>okButton</value>
   </data>
-  <data name="selectedCharmLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 15</value>
+  <data name="&gt;&gt;okButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="selectedCharmLabel.Text" xml:space="preserve">
-    <value>선택된 부적</value>
+  <data name="&gt;&gt;okButton.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="applyButton.Text" xml:space="preserve">
-    <value>적용</value>
+  <data name="&gt;&gt;okButton.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="exitButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="exitButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>393, 264</value>
+  </data>
+  <data name="exitButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="exitButton.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="exitButton.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="&gt;&gt;exitButton.Name" xml:space="preserve">
+    <value>exitButton</value>
+  </data>
+  <data name="&gt;&gt;exitButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;exitButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;exitButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>7, 15</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>784, 296</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -739,5 +782,20 @@
         Vkh6fq+IBiGz/igSIOHZ8XLl39yIQBWtILJkmAwHcsefpgmkogIWQ9i5fUvBBIBCTMR3AAAAEUlEQVQ6
         wXOiz9nhpwpS4/wfb8YjhNr65ooAAAAASUVORK5CYII=
 </value>
+  </data>
+  <data name="$this.MaximumSize" type="System.Drawing.Size, System.Drawing">
+    <value>800, 335</value>
+  </data>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>800, 335</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>HelpForm</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

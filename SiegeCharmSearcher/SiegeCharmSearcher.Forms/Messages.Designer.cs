@@ -88,11 +88,39 @@ namespace SiegeCharmSearcher.Forms {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Navigate.
+        /// </summary>
+        internal static string Navigate {
+            get {
+                return ResourceManager.GetString("Navigate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Charm Selected.
         /// </summary>
         internal static string NavigateNoCharmSelected {
             get {
                 return ResourceManager.GetString("NavigateNoCharmSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rainbow Six Siege was not found.
+        ///Restart the program after launching it..
+        /// </summary>
+        internal static string R6NotFoundContent {
+            get {
+                return ResourceManager.GetString("R6NotFoundContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to R6 Not Found.
+        /// </summary>
+        internal static string R6NotFoundTitle {
+            get {
+                return ResourceManager.GetString("R6NotFoundTitle", resourceCulture);
             }
         }
         
@@ -106,11 +134,48 @@ namespace SiegeCharmSearcher.Forms {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scan.
+        /// </summary>
+        internal static string Scan {
+            get {
+                return ResourceManager.GetString("Scan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Starting Scan.
         /// </summary>
         internal static string StartingAnalyzation {
             get {
                 return ResourceManager.GetString("StartingAnalyzation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        internal static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vulkan version of the game is not supported.
+        ///Restart the program after launching the game in DirectX..
+        /// </summary>
+        internal static string VulkanUnsupportedContent {
+            get {
+                return ResourceManager.GetString("VulkanUnsupportedContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vulkan Unsupported.
+        /// </summary>
+        internal static string VulkanUnsupportedTitle {
+            get {
+                return ResourceManager.GetString("VulkanUnsupportedTitle", resourceCulture);
             }
         }
     }

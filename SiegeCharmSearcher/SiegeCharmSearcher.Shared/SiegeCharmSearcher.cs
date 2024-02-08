@@ -7,15 +7,21 @@ namespace SiegeCharmSearcher.Shared {
         private readonly Process process;
         public Settings settings = new();
         
-        private volatile bool stopAnalyzing;
+        public volatile bool analyzing = false;
+        private const string blacklisted = "=[]\\;,./~!@#$%^&*()_+{}|:\"<>?[\n";
         private readonly TesseractEngine tesseractEngine = new("./tessdata-4.1.0", "eng", EngineMode.TesseractAndLstm);
 
         public MarkableObservableCollection<Charm> charms = [];
 
+        public volatile bool navigating = false;
+
         public SiegeCharmSearcher() {
-            process = WindowsWrapper.FindProcessOfNames([
-                "RainbowSix"
-            ]);
+            try {
+                WindowsWrapper.FindProcessOfNames(["RainbowSix_Vulkan"]);
+                throw new VulkanNotSupportedException();
+            } catch (ProcessNotFoundException) {}
+
+            process = WindowsWrapper.FindProcessOfNames(["RainbowSix"]);
 
             Settings? loaded = LoadSettings();
             if (loaded == null) {
@@ -45,14 +51,26 @@ namespace SiegeCharmSearcher.Shared {
             return loaded;
         }
 
-        public void StartAnalyzing(IProgress<Bitmap> analyzingImage,
+        private static bool AnalyzePresent(Screenshot screenshot) {
+            Color color = screenshot.presentImage.GetPixel(0, 0);
+            screenshot.presentColor = color;
+
+            byte maximum = 35;
+            return (MathHelper.InBetweenInclusive(color.R, 0, maximum) &&
+                    MathHelper.InBetweenInclusive(color.G, 0, maximum) &&
+                    MathHelper.InBetweenInclusive(color.B, 0, maximum));
+        }
+
+        public void StartAnalyzing(IProgress<Bitmap> analyzingNameImage,
+                                   IProgress<Bitmap> analyzingOwnedImage,
+                                   IProgress<Color> analyzingPresentColor,
                                    IProgress<string> status,
-                                   IProgress<Charm> analyzedCharm,
-                                   IProgress<bool> enableProgressBar) {
-            stopAnalyzing = false;
-            enableProgressBar.Report(true);
+                                   IProgress<Charm> analyzedCharm) {
+            analyzing = true;
+            navigating = false;
             charms.Clear();
-            
+            WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
+
             Vector2Int position = new(0, 0);
             int retryCount = 0;
 
@@ -70,21 +88,14 @@ namespace SiegeCharmSearcher.Shared {
                 analyzedCharm.Report(charm);
             }
 
-            AddCharm(new Charm() {
-                name = Messages.NoneCharm,
-            });
-            IncrementPosition();
-
-            WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
             while (true) {
-                if (stopAnalyzing) {
-                    status.Report(Messages.StoppedAnalyzing);
+                if (!analyzing) {
                     break;
                 }
 
                 status.Report(string.Empty);
 
-                if (retryCount >= 5) {
+                if (retryCount >= 10) {
                     status.Report(Messages.Skipping);
                     retryCount = 0;
 
@@ -100,12 +111,24 @@ namespace SiegeCharmSearcher.Shared {
                 Screenshot screenshot = new(settings.resolution);
                 screenshot.charm.position = position;
                 bool success = AnalyzeCharmName(screenshot);
-                analyzingImage.Report(screenshot.image);
+                analyzingNameImage.Report(screenshot.nameImage);
 
                 if (!success) {
                     status.Report(string.Format(Messages.RetryCount, retryCount++));
                     Thread.Sleep(settings.delay);
                     continue;
+                }
+
+                AnalyzeOwned(screenshot);
+                analyzingOwnedImage.Report(screenshot.ownedImage);
+
+                bool isPresent = AnalyzePresent(screenshot);
+                analyzingPresentColor.Report(screenshot.presentColor);
+
+                if ((position != new Vector2Int(0, 0)) &&
+                    (!screenshot.owned.Contains("OW", StringComparison.InvariantCultureIgnoreCase)) &&
+                    (!isPresent)) {
+                    break;
                 }
 
                 retryCount = 0;
@@ -114,14 +137,15 @@ namespace SiegeCharmSearcher.Shared {
                 IncrementPosition();
             }
 
-            enableProgressBar.Report(false);
+            status.Report(Messages.StoppedAnalyzing);
+            analyzing = false;
         }
 
-        public bool AnalyzeCharmName(Screenshot screenshot) {
+        private bool AnalyzeCharmName(Screenshot screenshot) {
             screenshot.Capture();
-            using Page page = tesseractEngine.Process(screenshot.image);
+            using Page page = tesseractEngine.Process(screenshot.nameImage);
 
-            string charmName = page.GetText().RemoveAllCharactersInString("=[]\\;,./~!@#$%^&*()_+{}|:\"<>?[\n");
+            string charmName = page.GetText().RemoveAllCharactersInString(blacklisted);
             screenshot.charm.name = charmName;
 
             page.Dispose();
@@ -131,11 +155,16 @@ namespace SiegeCharmSearcher.Shared {
                     ((charms.Count == 0) || (charmName != charms[^1].name)));
         }
 
-        public void StopAnalyzing() {
-            stopAnalyzing = true;
+        private void AnalyzeOwned(Screenshot screenshot) {
+            using Page page = tesseractEngine.Process(screenshot.ownedImage);
+
+            screenshot.owned = page.GetText().RemoveAllCharactersInString(blacklisted);
+            page.Dispose();
         }
 
         public void NavigateTo(Charm charm, IProgress<string> status) {
+            analyzing = false;
+            navigating = true;
             status.Report(string.Format(Messages.NavigatingTo, charm.position));
 
             WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
@@ -144,6 +173,10 @@ namespace SiegeCharmSearcher.Shared {
             int retryCount = 0;
             Charm? foundCharm = null;
             while (true) {
+                if (!navigating) {
+                    break;
+                }
+
                 foreach (Charm _charm in charms) {
                     if (_charm.name == screenshot.charm.name) {
                         foundCharm = _charm;
@@ -167,7 +200,7 @@ namespace SiegeCharmSearcher.Shared {
                 return;
             }
 
-            if (target.x < current.y) {
+            if (target.x < current.x) {
                 while (target.x < current.x--) {
                     SendKeyAndSleep(Direction.Left);
                 }
@@ -178,7 +211,7 @@ namespace SiegeCharmSearcher.Shared {
             }
 
             if (target.y < current.y) {
-                while (target.x < current.x--) {
+                while (target.y < current.y--) {
                     SendKeyAndSleep(Direction.Up);
                 }
             } else {
@@ -187,13 +220,12 @@ namespace SiegeCharmSearcher.Shared {
                 }
             }
 
+            navigating = false;
             status.Report(Messages.NavigationDone);
         }
 
         //This is probably replacable with WH_JOURNALPLAYBACK but this will do for now.
         private void SendKeyAndSleep(Direction direction) {
-            WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
-
             switch (direction) {
                 case Direction.Up:
                     Process.Start("./Scripts/W.exe").WaitForExit();

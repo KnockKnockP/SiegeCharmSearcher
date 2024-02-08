@@ -145,13 +145,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;screenshotDisplay.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>19</value>
   </data>
   <data name="analyzeButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="analyzeButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>666, 373</value>
+    <value>676, 373</value>
   </data>
   <data name="analyzeButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -172,34 +172,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;analyzeButton.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="stopAnalyzingButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="stopAnalyzingButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>666, 344</value>
-  </data>
-  <data name="stopAnalyzingButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="stopAnalyzingButton.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="stopAnalyzingButton.Text" xml:space="preserve">
-    <value>Stop</value>
-  </data>
-  <data name="&gt;&gt;stopAnalyzingButton.Name" xml:space="preserve">
-    <value>stopAnalyzingButton</value>
-  </data>
-  <data name="&gt;&gt;stopAnalyzingButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;stopAnalyzingButton.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;stopAnalyzingButton.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>18</value>
   </data>
   <data name="charmsList0.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -229,7 +202,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;charmsList0.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>17</value>
   </data>
   <data name="charmsList1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -259,7 +232,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;charmsList1.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>16</value>
   </data>
   <data name="charmsList2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -289,7 +262,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;charmsList2.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>15</value>
   </data>
   <data name="searchBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Right</value>
@@ -313,7 +286,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;searchBox.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="resultsList.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Right</value>
@@ -343,13 +316,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;resultsList.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="navigateButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="navigateButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>747, 373</value>
+    <value>757, 373</value>
   </data>
   <data name="navigateButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -370,7 +343,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;navigateButton.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>12</value>
   </data>
   <metadata name="statusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -397,7 +370,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;statusStrip.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="analyzingProgressBar.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 16</value>
@@ -445,7 +418,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;menuStrip.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 20</value>
@@ -471,6 +444,12 @@
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="helpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>116, 22</value>
+  </data>
+  <data name="helpToolStripMenuItem.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
   <data name="exitToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
     <value>116, 22</value>
   </data>
@@ -481,7 +460,7 @@
     <value>Top, Bottom, Right</value>
   </data>
   <data name="charmNameInputBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>666, 111</value>
+    <value>667, 155</value>
   </data>
   <data name="charmNameInputBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>162, 23</value>
@@ -499,7 +478,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;charmNameInputBox.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="xLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Right</value>
@@ -508,7 +487,7 @@
     <value>True</value>
   </data>
   <data name="xLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>696, 140</value>
+    <value>697, 184</value>
   </data>
   <data name="xLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>14, 15</value>
@@ -532,7 +511,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;xLabel.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="yLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Right</value>
@@ -541,7 +520,7 @@
     <value>True</value>
   </data>
   <data name="yLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>783, 140</value>
+    <value>784, 184</value>
   </data>
   <data name="yLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>14, 15</value>
@@ -565,13 +544,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;yLabel.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="xInputBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Right</value>
   </data>
   <data name="xInputBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>666, 158</value>
+    <value>667, 202</value>
   </data>
   <data name="xInputBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -589,13 +568,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;xInputBox.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="yInputBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Right</value>
   </data>
   <data name="yInputBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>753, 158</value>
+    <value>754, 202</value>
   </data>
   <data name="yInputBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -613,7 +592,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;yInputBox.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="searchLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Right</value>
@@ -646,7 +625,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;searchLabel.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="selectedCharmLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Right</value>
@@ -655,7 +634,7 @@
     <value>True</value>
   </data>
   <data name="selectedCharmLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>703, 93</value>
+    <value>703, 138</value>
   </data>
   <data name="selectedCharmLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 15</value>
@@ -679,13 +658,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;selectedCharmLabel.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="applyButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="applyButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>747, 344</value>
+    <value>757, 344</value>
   </data>
   <data name="applyButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -706,6 +685,66 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;applyButton.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="ownedImageDisplay.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="ownedImageDisplay.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ownedImageDisplay.Location" type="System.Drawing.Point, System.Drawing">
+    <value>667, 93</value>
+  </data>
+  <data name="ownedImageDisplay.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 41</value>
+  </data>
+  <data name="ownedImageDisplay.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
+  </data>
+  <data name="ownedImageDisplay.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <data name="&gt;&gt;ownedImageDisplay.Name" xml:space="preserve">
+    <value>ownedImageDisplay</value>
+  </data>
+  <data name="&gt;&gt;ownedImageDisplay.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ownedImageDisplay.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ownedImageDisplay.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="presentImageDisplay.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="presentImageDisplay.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="presentImageDisplay.Location" type="System.Drawing.Point, System.Drawing">
+    <value>817, 93</value>
+  </data>
+  <data name="presentImageDisplay.Size" type="System.Drawing.Size, System.Drawing">
+    <value>11, 41</value>
+  </data>
+  <data name="presentImageDisplay.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
+  </data>
+  <data name="presentImageDisplay.TabIndex" type="System.Int32, mscorlib">
+    <value>36</value>
+  </data>
+  <data name="&gt;&gt;presentImageDisplay.Name" xml:space="preserve">
+    <value>presentImageDisplay</value>
+  </data>
+  <data name="&gt;&gt;presentImageDisplay.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;presentImageDisplay.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;presentImageDisplay.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -1319,6 +1358,12 @@
     <value>exitToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;exitToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;helpToolStripMenuItem.Name" xml:space="preserve">
+    <value>helpToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;helpToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;exitToolStripMenuItem1.Name" xml:space="preserve">

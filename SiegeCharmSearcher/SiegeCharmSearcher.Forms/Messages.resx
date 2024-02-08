@@ -126,13 +126,36 @@
   <data name="LoadCharms" xml:space="preserve">
     <value>Load Charms</value>
   </data>
+  <data name="Navigate" xml:space="preserve">
+    <value>Navigate</value>
+  </data>
   <data name="NavigateNoCharmSelected" xml:space="preserve">
     <value>No Charm Selected</value>
+  </data>
+  <data name="R6NotFoundContent" xml:space="preserve">
+    <value>Rainbow Six Siege was not found.
+Restart the program after launching it.</value>
+  </data>
+  <data name="R6NotFoundTitle" xml:space="preserve">
+    <value>R6 Not Found</value>
   </data>
   <data name="SaveCharms" xml:space="preserve">
     <value>Save Charms</value>
   </data>
+  <data name="Scan" xml:space="preserve">
+    <value>Scan</value>
+  </data>
   <data name="StartingAnalyzation" xml:space="preserve">
     <value>Starting Scan</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="VulkanUnsupportedContent" xml:space="preserve">
+    <value>Vulkan version of the game is not supported.
+Restart the program after launching the game in DirectX.</value>
+  </data>
+  <data name="VulkanUnsupportedTitle" xml:space="preserve">
+    <value>Vulkan Unsupported</value>
   </data>
 </root>

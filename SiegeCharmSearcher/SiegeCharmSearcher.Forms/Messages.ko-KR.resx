@@ -126,13 +126,36 @@
   <data name="LoadCharms" xml:space="preserve">
     <value>부적 불러오기</value>
   </data>
+  <data name="Navigate" xml:space="preserve">
+    <value>이동하기</value>
+  </data>
   <data name="NavigateNoCharmSelected" xml:space="preserve">
     <value>선택된 부적 없음</value>
+  </data>
+  <data name="R6NotFoundContent" xml:space="preserve">
+    <value>레인보우 식스 시즈가 발견되지 않았습니다.
+게임 실행 후 프로그램을 재실행 해주세요.</value>
+  </data>
+  <data name="R6NotFoundTitle" xml:space="preserve">
+    <value>레식 미발견</value>
   </data>
   <data name="SaveCharms" xml:space="preserve">
     <value>부적 저장</value>
   </data>
+  <data name="Scan" xml:space="preserve">
+    <value>스캔</value>
+  </data>
   <data name="StartingAnalyzation" xml:space="preserve">
     <value>스캔 시작 중</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>중지</value>
+  </data>
+  <data name="VulkanUnsupportedContent" xml:space="preserve">
+    <value>Vulkan은 지원되지 않습니다.
+DirectX로 실행 후 프로그램을 재실행 해주세요.</value>
+  </data>
+  <data name="VulkanUnsupportedTitle" xml:space="preserve">
+    <value>Vulkan 미지원</value>
   </data>
 </root>

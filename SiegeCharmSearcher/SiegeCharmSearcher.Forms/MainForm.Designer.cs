@@ -26,7 +26,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             screenshotDisplay = new PictureBox();
             analyzeButton = new Button();
-            stopAnalyzingButton = new Button();
             charmsList0 = new ListBox();
             charmsList1 = new ListBox();
             charmsList2 = new ListBox();
@@ -42,6 +41,7 @@
             saveToolStripMenuItem = new ToolStripMenuItem();
             loadToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
+            helpToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem1 = new ToolStripMenuItem();
             charmNameInputBox = new TextBox();
             xLabel = new Label();
@@ -51,9 +51,13 @@
             searchLabel = new Label();
             selectedCharmLabel = new Label();
             applyButton = new Button();
+            ownedImageDisplay = new PictureBox();
+            presentImageDisplay = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)screenshotDisplay).BeginInit();
             statusStrip.SuspendLayout();
             menuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ownedImageDisplay).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)presentImageDisplay).BeginInit();
             SuspendLayout();
             // 
             // screenshotDisplay
@@ -68,13 +72,6 @@
             analyzeButton.Name = "analyzeButton";
             analyzeButton.UseVisualStyleBackColor = true;
             analyzeButton.Click += AnalyzeButtonClick;
-            // 
-            // stopAnalyzingButton
-            // 
-            resources.ApplyResources(stopAnalyzingButton, "stopAnalyzingButton");
-            stopAnalyzingButton.Name = "stopAnalyzingButton";
-            stopAnalyzingButton.UseVisualStyleBackColor = true;
-            stopAnalyzingButton.Click += StopAnalyzingButtonClick;
             // 
             // charmsList0
             // 
@@ -149,7 +146,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveToolStripMenuItem, loadToolStripMenuItem, exitToolStripMenuItem, exitToolStripMenuItem1 });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveToolStripMenuItem, loadToolStripMenuItem, exitToolStripMenuItem, helpToolStripMenuItem, exitToolStripMenuItem1 });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             resources.ApplyResources(fileToolStripMenuItem, "fileToolStripMenuItem");
             // 
@@ -170,6 +167,12 @@
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             resources.ApplyResources(exitToolStripMenuItem, "exitToolStripMenuItem");
             exitToolStripMenuItem.Click += SettingsMenuButtonClick;
+            // 
+            // helpToolStripMenuItem
+            // 
+            helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            resources.ApplyResources(helpToolStripMenuItem, "helpToolStripMenuItem");
+            helpToolStripMenuItem.Click += ShowHelpButtonClicked;
             // 
             // exitToolStripMenuItem1
             // 
@@ -219,10 +222,24 @@
             applyButton.UseVisualStyleBackColor = true;
             applyButton.Click += ApplyButtonClick;
             // 
+            // ownedImageDisplay
+            // 
+            resources.ApplyResources(ownedImageDisplay, "ownedImageDisplay");
+            ownedImageDisplay.Name = "ownedImageDisplay";
+            ownedImageDisplay.TabStop = false;
+            // 
+            // presentImageDisplay
+            // 
+            resources.ApplyResources(presentImageDisplay, "presentImageDisplay");
+            presentImageDisplay.Name = "presentImageDisplay";
+            presentImageDisplay.TabStop = false;
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(presentImageDisplay);
+            Controls.Add(ownedImageDisplay);
             Controls.Add(applyButton);
             Controls.Add(selectedCharmLabel);
             Controls.Add(searchLabel);
@@ -239,7 +256,6 @@
             Controls.Add(charmsList2);
             Controls.Add(charmsList1);
             Controls.Add(charmsList0);
-            Controls.Add(stopAnalyzingButton);
             Controls.Add(analyzeButton);
             Controls.Add(screenshotDisplay);
             MainMenuStrip = menuStrip;
@@ -250,6 +266,8 @@
             statusStrip.PerformLayout();
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)ownedImageDisplay).EndInit();
+            ((System.ComponentModel.ISupportInitialize)presentImageDisplay).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -257,7 +275,6 @@
         #endregion
         private PictureBox screenshotDisplay;
         private Button analyzeButton;
-        private Button stopAnalyzingButton;
         private ListBox charmsList0;
         private ListBox charmsList1;
         private ListBox charmsList2;
@@ -282,5 +299,8 @@
         private Label searchLabel;
         private Label selectedCharmLabel;
         private Button applyButton;
+        private ToolStripMenuItem helpToolStripMenuItem;
+        private PictureBox ownedImageDisplay;
+        private PictureBox presentImageDisplay;
     }
 }
