@@ -178,6 +178,11 @@ namespace SiegeCharmSearcher.Forms {
             }
         }
 
+        private void SettingsMenuButtonClick(object sender, EventArgs eventArgs) {
+            SettingsMenuForm settingsMenuForm = new(siegeCharmSearcher);
+            settingsMenuForm.ShowDialog();
+        }
+
         private void ExitButtonClick(object sender, EventArgs eventArgs) {
             Application.Exit();
         }
@@ -200,7 +205,6 @@ namespace SiegeCharmSearcher.Forms {
 }
 
 //TODO:
-//add and remove charms
 //add settings menu.
 //add custom resolution setting.
 //add custom aspect ratio setting.

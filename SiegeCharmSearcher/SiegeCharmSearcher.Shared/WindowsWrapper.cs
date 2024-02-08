@@ -38,7 +38,7 @@ namespace SiegeCharmSearcher.Shared {
             if (!PInvoke.EnumDisplaySettings(null, ENUM_DISPLAY_SETTINGS_MODE.ENUM_CURRENT_SETTINGS, ref devmode)) {
                 throw new ResolutionDetectionFailException();
             }
-            return new Resolution(new Vector2Int((int)(devmode.dmPelsWidth), (int)(devmode.dmPelsHeight)), (int)(devmode.dmDisplayFrequency));
+            return new Resolution(new Vector2Int((int)(devmode.dmPelsWidth), (int)(devmode.dmPelsHeight)), (int)(devmode.dmDisplayFrequency), AspectRatio._169);
         }
 
         internal static void BringWindowUpFront(nint windowHandle) {

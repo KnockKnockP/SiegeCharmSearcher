@@ -5,9 +5,8 @@ using Tesseract;
 namespace SiegeCharmSearcher.Shared {
     public class SiegeCharmSearcher {
         private readonly Process process;
-        public Resolution Resolution { get; private set; }
-
-        const int delay = 500;
+        public Settings settings = new();
+        
         private volatile bool stopAnalyzing;
         private readonly TesseractEngine tesseractEngine = new("./tessdata-4.1.0", "eng", EngineMode.TesseractAndLstm);
 
@@ -17,7 +16,33 @@ namespace SiegeCharmSearcher.Shared {
             process = WindowsWrapper.FindProcessOfNames([
                 "RainbowSix"
             ]);
-            Resolution = WindowsWrapper.GetResolution();
+
+            Settings? loaded = LoadSettings();
+            if (loaded == null) {
+                settings = new Settings {
+                    resolution = WindowsWrapper.GetResolution()
+                };
+            } else {
+                settings = loaded;
+            }
+        }
+
+        public void SaveSettings() {
+            if (settings == null) {
+                return;
+            }
+
+            FileManager.SaveAsJson(settings.SerializeAsJson(), FileManager.SettingsFilePath);
+        }
+
+        private static Settings? LoadSettings() {
+            Settings loaded = new();
+            try {
+                loaded.LoadFromJson(FileManager.ReadJson(FileManager.SettingsFilePath));
+            } catch (Exception) {
+                return null;
+            }
+            return loaded;
         }
 
         public void StartAnalyzing(IProgress<Bitmap> analyzingImage,
@@ -72,14 +97,14 @@ namespace SiegeCharmSearcher.Shared {
                     continue;
                 }
 
-                Screenshot screenshot = new(Resolution);
+                Screenshot screenshot = new(settings.resolution);
                 screenshot.charm.position = position;
                 bool success = AnalyzeCharmName(screenshot);
                 analyzingImage.Report(screenshot.image);
 
                 if (!success) {
                     status.Report($"Retry count: {retryCount++}");
-                    Thread.Sleep(delay);
+                    Thread.Sleep(settings.delay);
                     continue;
                 }
 
@@ -119,7 +144,7 @@ namespace SiegeCharmSearcher.Shared {
             status.Report($"Navigating to {charm.position}.");
 
             WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
-            Screenshot screenshot = new(Resolution);
+            Screenshot screenshot = new(settings.resolution);
 
             int retryCount = 0;
             Charm? foundCharm = null;
@@ -133,7 +158,7 @@ namespace SiegeCharmSearcher.Shared {
                 //foundCharm = charms.Find(charm => charm.name == screenshot.charm.name);
                 if (!AnalyzeCharmName(screenshot) || (foundCharm == null)) {
                     status.Report($"Retry count: {retryCount++}");
-                    Thread.Sleep(delay);
+                    Thread.Sleep(settings.delay);
                     continue;
                 }
 
@@ -189,7 +214,7 @@ namespace SiegeCharmSearcher.Shared {
                     break;
             }
 
-            Thread.Sleep(delay);
+            Thread.Sleep(settings.delay);
         }
 
         public void Save(string path) {

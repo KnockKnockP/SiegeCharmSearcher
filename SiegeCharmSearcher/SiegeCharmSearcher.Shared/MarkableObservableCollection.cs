@@ -4,9 +4,7 @@ using System.Collections.Specialized;
 
 namespace SiegeCharmSearcher.Shared {
     public class MarkableObservableCollection<T> : ObservableCollection<T> {
-        public bool IsDirty {
-            get; private set;
-        }
+        public bool IsDirty { get; private set; }
 
         public MarkableObservableCollection() : base() {
             CollectionChanged += OnCollectionChanged;
