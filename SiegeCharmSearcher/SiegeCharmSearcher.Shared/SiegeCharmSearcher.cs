@@ -5,12 +5,13 @@ using Tesseract;
 namespace SiegeCharmSearcher.Shared {
     public class SiegeCharmSearcher {
         private readonly Process process;
-        internal Resolution Resolution { get; private set; }
+        public Resolution Resolution { get; private set; }
 
-        private bool stopAnalyzing;
+        const int delay = 500;
+        private volatile bool stopAnalyzing;
         private readonly TesseractEngine tesseractEngine = new("./tessdata-4.1.0", "eng", EngineMode.TesseractAndLstm);
 
-        public readonly List<Charm> charms = [];
+        public MarkableObservableCollection<Charm> charms = [];
 
         public SiegeCharmSearcher() {
             process = WindowsWrapper.FindProcessOfNames([
@@ -20,18 +21,15 @@ namespace SiegeCharmSearcher.Shared {
         }
 
         public void StartAnalyzing(IProgress<Bitmap> analyzingImage,
-                                   IProgress<string> warning,
-                                   IProgress<Charm> analyzedCharm) {
+                                   IProgress<string> status,
+                                   IProgress<Charm> analyzedCharm,
+                                   IProgress<bool> enableProgressBar) {
             stopAnalyzing = false;
+            enableProgressBar.Report(true);
             charms.Clear();
             
             Vector2Int position = new(0, 0);
             int retryCount = 0;
-
-            void SelectNext() {
-                SendD();
-                Thread.Sleep(500);
-            }
 
             void IncrementPosition() {
                 if (++position.x > 2) {
@@ -39,7 +37,7 @@ namespace SiegeCharmSearcher.Shared {
                     ++position.y;
                 }
 
-                SelectNext();
+                SendKeyAndSleep(Direction.Right);
             }
 
             void AddCharm(Charm charm) {
@@ -47,17 +45,22 @@ namespace SiegeCharmSearcher.Shared {
                 analyzedCharm.Report(charm);
             }
 
+            AddCharm(new Charm() {
+                name = "None",
+            });
+            IncrementPosition();
+
             WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
             while (true) {
                 if (stopAnalyzing) {
-                    warning.Report("Stopped anal.");
+                    status.Report("Stopped analyzing.");
                     break;
                 }
 
-                warning.Report("");
+                status.Report(string.Empty);
 
                 if (retryCount >= 5) {
-                    warning.Report("Skipping.");
+                    status.Report("Skipping.");
                     retryCount = 0;
 
                     AddCharm(new Charm() {
@@ -75,13 +78,13 @@ namespace SiegeCharmSearcher.Shared {
                 analyzingImage.Report(screenshot.image);
 
                 if (!success) {
-                    warning.Report($"Retry count: {retryCount++}");
-                    Thread.Sleep(250);
+                    status.Report($"Retry count: {retryCount++}");
+                    Thread.Sleep(delay);
                     continue;
                 }
 
                 if (screenshot.charm.name.Equals("view more", StringComparison.CurrentCultureIgnoreCase)) {
-                    warning.Report("END OF IN GAME LIST");
+                    status.Report("END OF IN GAME LIST");
                     break;
                 }
 
@@ -90,9 +93,11 @@ namespace SiegeCharmSearcher.Shared {
 
                 IncrementPosition();
             }
+
+            enableProgressBar.Report(false);
         }
 
-        private bool AnalyzeCharmName(Screenshot screenshot) {
+        public bool AnalyzeCharmName(Screenshot screenshot) {
             screenshot.Capture();
             using Page page = tesseractEngine.Process(screenshot.image);
 
@@ -110,25 +115,89 @@ namespace SiegeCharmSearcher.Shared {
             stopAnalyzing = true;
         }
 
+        public void NavigateTo(Charm charm, IProgress<string> status) {
+            status.Report($"Navigating to {charm.position}.");
+
+            WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
+            Screenshot screenshot = new(Resolution);
+
+            int retryCount = 0;
+            Charm? foundCharm = null;
+            while (true) {
+                foreach (Charm _charm in charms) {
+                    if (_charm.name == screenshot.charm.name) {
+                        foundCharm = _charm;
+                        break;
+                    }
+                }
+                //foundCharm = charms.Find(charm => charm.name == screenshot.charm.name);
+                if (!AnalyzeCharmName(screenshot) || (foundCharm == null)) {
+                    status.Report($"Retry count: {retryCount++}");
+                    Thread.Sleep(delay);
+                    continue;
+                }
+
+                status.Report($"Standing on {foundCharm.name} {foundCharm.position}.");
+                break;
+            }
+
+            Vector2Int target = charm.position, current = foundCharm.position;
+            if (target == current) {
+                status.Report("Already on the selected charm.");
+                return;
+            }
+
+            if (target.x < current.y) {
+                while (target.x < current.x--) {
+                    SendKeyAndSleep(Direction.Left);
+                }
+            } else {
+                while (target.x > current.x++) {
+                    SendKeyAndSleep(Direction.Right);
+                }
+            }
+
+            if (target.y < current.y) {
+                while (target.x < current.x--) {
+                    SendKeyAndSleep(Direction.Up);
+                }
+            } else {
+                while (target.y > current.y++) {
+                    SendKeyAndSleep(Direction.Down);
+                }
+            }
+
+            status.Report($"Navigation done. {target} {current}");
+        }
+
         //This is probably replacable with WH_JOURNALPLAYBACK but this will do for now.
-        internal void SendW() {
+        private void SendKeyAndSleep(Direction direction) {
             WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
-            Process.Start("./Scripts/W.exe").WaitForExit();
+
+            switch (direction) {
+                case Direction.Up:
+                    Process.Start("./Scripts/W.exe").WaitForExit();
+                    break;
+                case Direction.Left:
+                    Process.Start("./Scripts/A.exe").WaitForExit();
+                    break;
+                case Direction.Down:
+                    Process.Start("./Scripts/S.exe").WaitForExit();
+                    break;
+                case Direction.Right:
+                    Process.Start("./Scripts/D.exe").WaitForExit();
+                    break;
+            }
+
+            Thread.Sleep(delay);
         }
 
-        internal void SendA() {
-            WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
-            Process.Start("./Scripts/A.exe").WaitForExit();
+        public void Save(string path) {
+            FileManager.SaveAsJson(charms.SerializeAsJson(), path);
         }
 
-        internal void SendS() {
-            WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
-            Process.Start("./Scripts/S.exe").WaitForExit();
-        }
-
-        internal void SendD() {
-            WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
-            Process.Start("./Scripts/D.exe").WaitForExit();
+        public void Load(string path) {
+            charms.LoadFromJson(path);
         }
     }
 }

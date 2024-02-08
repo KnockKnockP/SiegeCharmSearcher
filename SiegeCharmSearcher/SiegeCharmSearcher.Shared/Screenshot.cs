@@ -1,12 +1,12 @@
 ﻿using System.Drawing;
 
 namespace SiegeCharmSearcher.Shared {
-    internal class Screenshot {
+    public class Screenshot {
         internal Bitmap image;
-        internal Charm charm = new();
+        public Charm charm = new();
         private readonly Vector2Int startingPoint, endingPoint;
 
-        internal Screenshot(Resolution resolution) {
+        public Screenshot(Resolution resolution) {
             Vector2 startingPointNormalizedRelativeTo1080P = new(1110f, 160f);
             startingPointNormalizedRelativeTo1080P.Normalize(resolution.size.ToVector2());
 

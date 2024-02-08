@@ -36,7 +36,7 @@ namespace SiegeCharmSearcher.Shared {
             DEVMODEW devmode = default;
             devmode.dmSize = (ushort)(Marshal.SizeOf(devmode));
             if (!PInvoke.EnumDisplaySettings(null, ENUM_DISPLAY_SETTINGS_MODE.ENUM_CURRENT_SETTINGS, ref devmode)) {
-                throw new Exception();
+                throw new ResolutionDetectionFailException();
             }
             return new Resolution(new Vector2Int((int)(devmode.dmPelsWidth), (int)(devmode.dmPelsHeight)), (int)(devmode.dmDisplayFrequency));
         }

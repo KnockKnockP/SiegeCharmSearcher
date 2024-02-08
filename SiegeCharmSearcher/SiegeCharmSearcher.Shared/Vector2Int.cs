@@ -7,6 +7,18 @@
             y /= relativeTo.y;
         }
 
+        public static bool operator ==(Vector2Int left, Vector2Int right) {
+            return ((left.x == right.x) && (left.y == right.y));
+        }
+
+        public static bool operator !=(Vector2Int left, Vector2Int right) {
+            return ((left.x != right.x) || (left.y != right.y));
+        }
+
+        public readonly int ToScalar(int xScale) {
+            return ((y * xScale) + x);
+        }
+
         public override readonly string ToString() {
             return $"({x}, {y})";
         }
