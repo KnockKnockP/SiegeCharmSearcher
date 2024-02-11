@@ -2,6 +2,8 @@ using SiegeCharmSearcher.Shared;
 
 namespace SiegeCharmSearcher.Forms {
     public partial class MainForm : Form {
+        const string fileDialogFilter = "JavaScript Object Notation|*.json";
+
         private readonly Shared.SiegeCharmSearcher siegeCharmSearcher;
         private readonly ListBox[] charmsLists = new ListBox[3];
 
@@ -21,7 +23,11 @@ namespace SiegeCharmSearcher.Forms {
             }
         }
 
-        const string fileDialogFilter = "JavaScript Object Notation|*.json";
+        private bool detectPosition = true;
+
+        private Task? analyzationTask = null, navigationTask = null;
+        private CancellationTokenSource analyzationCancelTokenSource = new(),
+                                        navigationCancelTokenSource = new();
 
         public MainForm() {
             InitializeComponent();
@@ -76,9 +82,7 @@ namespace SiegeCharmSearcher.Forms {
         }
 
         private async void AnalyzeButtonClick(object sender, EventArgs eventArgs) {
-            if (siegeCharmSearcher.analyzing) {
-                siegeCharmSearcher.analyzing = false;
-            } else {
+            if (analyzationTask == null) {
                 analyzeButton.Text = Messages.Stop;
                 analyzingProgressBar.Style = ProgressBarStyle.Marquee;
                 statusLabel.Text = Messages.StartingAnalyzation;
@@ -90,16 +94,25 @@ namespace SiegeCharmSearcher.Forms {
                 IProgress<string> status = new Progress<string>(s => statusLabel.Text = s);
                 IProgress<Charm> analyzedCharm = new Progress<Charm>(AddCharm);
 
-                await Task.Factory.StartNew(() => {
+                analyzationTask = Task.Factory.StartNew(() => {
                     siegeCharmSearcher.StartAnalyzing(analyzingNameImage,
                                                       analyzingOwnedImage,
                                                       analyzingPresentColor,
                                                       status,
-                                                      analyzedCharm);
-                });
+                                                      analyzedCharm,
+                                                      analyzationCancelTokenSource.Token);
+                }, analyzationCancelTokenSource.Token);
 
+                try {
+                    await analyzationTask;
+                } catch (OperationCanceledException) {}
+
+                analyzationTask = null;
+                analyzationCancelTokenSource = new();
                 analyzeButton.Text = Messages.Scan;
                 analyzingProgressBar.Style = ProgressBarStyle.Continuous;
+            } else {
+                analyzationCancelTokenSource.Cancel();
             }
         }
 
@@ -152,19 +165,33 @@ namespace SiegeCharmSearcher.Forms {
                 return;
             }
 
-            if (siegeCharmSearcher.navigating) {
-                siegeCharmSearcher.navigating = false;
-            } else {
+            if (navigationTask == null) {
                 navigateButton.Text = Messages.Stop;
                 analyzingProgressBar.Style = ProgressBarStyle.Marquee;
 
-                IProgress<string> status = new Progress<string>(s => statusLabel.Text = s);
-                await Task.Factory.StartNew(() => {
-                    siegeCharmSearcher.NavigateTo(SelectedCharm, status);
-                });
+                Vector2Int? specifiedPosition = null;
+                if (!detectPosition) {
+                    specifiedPosition = new(int.Parse(navigationXInput.Text), int.Parse(navigationYInput.Text));
+                }
 
+                IProgress<string> status = new Progress<string>(s => statusLabel.Text = s);
+                navigationTask = Task.Factory.StartNew(() => {
+                    siegeCharmSearcher.NavigateTo(SelectedCharm,
+                                                  specifiedPosition,
+                                                  status,
+                                                  navigationCancelTokenSource.Token);
+                }, navigationCancelTokenSource.Token);
+
+                try { 
+                    await navigationTask;
+                } catch (OperationCanceledException) {}
+
+                navigationTask = null;
+                navigationCancelTokenSource = new();
                 navigateButton.Text = Messages.Navigate;
                 analyzingProgressBar.Style = ProgressBarStyle.Continuous;
+            } else {
+                navigationCancelTokenSource.Cancel();
             }
         }
 
@@ -225,6 +252,14 @@ namespace SiegeCharmSearcher.Forms {
         }
 
         private void ShowHelpButtonClicked(object sender, EventArgs eventArgs) => DisplayHelp();
+
+        private void DetectPositionChecked(object sender, EventArgs eventArgs) {
+            detectPosition = true;
+        }
+
+        private void SpecifyPositionChecked(object sender, EventArgs eventArgs) {
+            detectPosition = false;
+        }
 
         private void ExitButtonClick(object sender, EventArgs eventArgs) {
             Application.Exit();

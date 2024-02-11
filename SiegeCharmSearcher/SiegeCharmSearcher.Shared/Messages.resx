@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddedCharm" xml:space="preserve">
+    <value>Charm Added: {0} {1}</value>
+  </data>
   <data name="AlreadySamePlace" xml:space="preserve">
     <value>Already on the Selected Charm</value>
+  </data>
+  <data name="FailedToDetectPosition" xml:space="preserve">
+    <value>Failed to Detect Position</value>
+  </data>
+  <data name="NavigatingFrom" xml:space="preserve">
+    <value>Navigating from Specified Position: {0}</value>
   </data>
   <data name="NavigatingTo" xml:space="preserve">
     <value>Navigating to {0}</value>

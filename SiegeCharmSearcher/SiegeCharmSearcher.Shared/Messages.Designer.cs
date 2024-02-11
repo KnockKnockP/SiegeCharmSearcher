@@ -61,11 +61,38 @@ namespace SiegeCharmSearcher.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Charm Added: {0} {1}.
+        /// </summary>
+        internal static string AddedCharm {
+            get {
+                return ResourceManager.GetString("AddedCharm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Already on the Selected Charm.
         /// </summary>
         internal static string AlreadySamePlace {
             get {
                 return ResourceManager.GetString("AlreadySamePlace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to Detect Position.
+        /// </summary>
+        internal static string FailedToDetectPosition {
+            get {
+                return ResourceManager.GetString("FailedToDetectPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Navigating from Specified Position: {0}.
+        /// </summary>
+        internal static string NavigatingFrom {
+            get {
+                return ResourceManager.GetString("NavigatingFrom", resourceCulture);
             }
         }
         

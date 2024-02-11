@@ -120,9 +120,6 @@
   <data name="analyzeButton.Text" xml:space="preserve">
     <value>스캔</value>
   </data>
-  <data name="stopAnalyzingButton.Text" xml:space="preserve">
-    <value>중지</value>
-  </data>
   <data name="navigateButton.Text" xml:space="preserve">
     <value>이동하기</value>
   </data>
@@ -176,7 +173,7 @@
     <value>검색</value>
   </data>
   <data name="selectedCharmLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>711, 93</value>
+    <value>712, 137</value>
   </data>
   <data name="selectedCharmLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 15</value>
@@ -186,6 +183,27 @@
   </data>
   <data name="applyButton.Text" xml:space="preserve">
     <value>적용</value>
+  </data>
+  <data name="detectPositionButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 19</value>
+  </data>
+  <data name="detectPositionButton.Text" xml:space="preserve">
+    <value>위치 감지</value>
+  </data>
+  <data name="navigationLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>732, 257</value>
+  </data>
+  <data name="navigationLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>31, 15</value>
+  </data>
+  <data name="navigationLabel.Text" xml:space="preserve">
+    <value>이동</value>
+  </data>
+  <data name="specifyPositionButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 19</value>
+  </data>
+  <data name="specifyPositionButton.Text" xml:space="preserve">
+    <value>위치 지정</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

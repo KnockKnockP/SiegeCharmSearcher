@@ -53,6 +53,13 @@
             applyButton = new Button();
             ownedImageDisplay = new PictureBox();
             presentImageDisplay = new PictureBox();
+            detectPositionButton = new RadioButton();
+            navigationLabel = new Label();
+            specifyPositionButton = new RadioButton();
+            navigationYInput = new TextBox();
+            navigationXInput = new TextBox();
+            navigationYLabel = new Label();
+            navigationXLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)screenshotDisplay).BeginInit();
             statusStrip.SuspendLayout();
             menuStrip.SuspendLayout();
@@ -116,68 +123,68 @@
             // 
             // statusStrip
             // 
-            statusStrip.Items.AddRange(new ToolStripItem[] { analyzingProgressBar, statusLabel, r6Text });
             resources.ApplyResources(statusStrip, "statusStrip");
+            statusStrip.Items.AddRange(new ToolStripItem[] { analyzingProgressBar, statusLabel, r6Text });
             statusStrip.Name = "statusStrip";
             // 
             // analyzingProgressBar
             // 
-            analyzingProgressBar.Name = "analyzingProgressBar";
             resources.ApplyResources(analyzingProgressBar, "analyzingProgressBar");
+            analyzingProgressBar.Name = "analyzingProgressBar";
             analyzingProgressBar.Style = ProgressBarStyle.Continuous;
             // 
             // statusLabel
             // 
-            statusLabel.Name = "statusLabel";
             resources.ApplyResources(statusLabel, "statusLabel");
+            statusLabel.Name = "statusLabel";
             statusLabel.Spring = true;
             // 
             // r6Text
             // 
-            r6Text.Name = "r6Text";
             resources.ApplyResources(r6Text, "r6Text");
+            r6Text.Name = "r6Text";
             r6Text.Spring = true;
             // 
             // menuStrip
             // 
-            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
             resources.ApplyResources(menuStrip, "menuStrip");
+            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
             menuStrip.Name = "menuStrip";
             // 
             // fileToolStripMenuItem
             // 
+            resources.ApplyResources(fileToolStripMenuItem, "fileToolStripMenuItem");
             fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveToolStripMenuItem, loadToolStripMenuItem, exitToolStripMenuItem, helpToolStripMenuItem, exitToolStripMenuItem1 });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            resources.ApplyResources(fileToolStripMenuItem, "fileToolStripMenuItem");
             // 
             // saveToolStripMenuItem
             // 
-            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             resources.ApplyResources(saveToolStripMenuItem, "saveToolStripMenuItem");
+            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             saveToolStripMenuItem.Click += SaveButtonClick;
             // 
             // loadToolStripMenuItem
             // 
-            loadToolStripMenuItem.Name = "loadToolStripMenuItem";
             resources.ApplyResources(loadToolStripMenuItem, "loadToolStripMenuItem");
+            loadToolStripMenuItem.Name = "loadToolStripMenuItem";
             loadToolStripMenuItem.Click += LoadButtonClick;
             // 
             // exitToolStripMenuItem
             // 
-            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             resources.ApplyResources(exitToolStripMenuItem, "exitToolStripMenuItem");
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             exitToolStripMenuItem.Click += SettingsMenuButtonClick;
             // 
             // helpToolStripMenuItem
             // 
-            helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             resources.ApplyResources(helpToolStripMenuItem, "helpToolStripMenuItem");
+            helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Click += ShowHelpButtonClicked;
             // 
             // exitToolStripMenuItem1
             // 
-            exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
             resources.ApplyResources(exitToolStripMenuItem1, "exitToolStripMenuItem1");
+            exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
             exitToolStripMenuItem1.Click += ExitButtonClick;
             // 
             // charmNameInputBox
@@ -234,10 +241,58 @@
             presentImageDisplay.Name = "presentImageDisplay";
             presentImageDisplay.TabStop = false;
             // 
+            // detectPositionButton
+            // 
+            resources.ApplyResources(detectPositionButton, "detectPositionButton");
+            detectPositionButton.Checked = true;
+            detectPositionButton.Name = "detectPositionButton";
+            detectPositionButton.TabStop = true;
+            detectPositionButton.UseVisualStyleBackColor = true;
+            detectPositionButton.CheckedChanged += DetectPositionChecked;
+            // 
+            // navigationLabel
+            // 
+            resources.ApplyResources(navigationLabel, "navigationLabel");
+            navigationLabel.Name = "navigationLabel";
+            // 
+            // specifyPositionButton
+            // 
+            resources.ApplyResources(specifyPositionButton, "specifyPositionButton");
+            specifyPositionButton.Name = "specifyPositionButton";
+            specifyPositionButton.UseVisualStyleBackColor = true;
+            specifyPositionButton.CheckedChanged += SpecifyPositionChecked;
+            // 
+            // navigationYInput
+            // 
+            resources.ApplyResources(navigationYInput, "navigationYInput");
+            navigationYInput.Name = "navigationYInput";
+            // 
+            // navigationXInput
+            // 
+            resources.ApplyResources(navigationXInput, "navigationXInput");
+            navigationXInput.Name = "navigationXInput";
+            // 
+            // navigationYLabel
+            // 
+            resources.ApplyResources(navigationYLabel, "navigationYLabel");
+            navigationYLabel.Name = "navigationYLabel";
+            // 
+            // navigationXLabel
+            // 
+            resources.ApplyResources(navigationXLabel, "navigationXLabel");
+            navigationXLabel.Name = "navigationXLabel";
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(navigationYInput);
+            Controls.Add(navigationXInput);
+            Controls.Add(navigationYLabel);
+            Controls.Add(navigationXLabel);
+            Controls.Add(specifyPositionButton);
+            Controls.Add(navigationLabel);
+            Controls.Add(detectPositionButton);
             Controls.Add(presentImageDisplay);
             Controls.Add(ownedImageDisplay);
             Controls.Add(applyButton);
@@ -302,5 +357,12 @@
         private ToolStripMenuItem helpToolStripMenuItem;
         private PictureBox ownedImageDisplay;
         private PictureBox presentImageDisplay;
+        private RadioButton detectPositionButton;
+        private Label navigationLabel;
+        private RadioButton specifyPositionButton;
+        private TextBox navigationYInput;
+        private TextBox navigationXInput;
+        private Label navigationYLabel;
+        private Label navigationXLabel;
     }
 }

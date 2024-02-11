@@ -125,10 +125,10 @@
     <value>이 프로그램은 AutoHotKey를 사용하여 부적 메뉴를 탐색하며, 100% 안전하지 않습니다.
 우려가 있다면, 이 프로그램을 아래에 있는 버튼으로 종료해주세요.
 
-스캔을 시작하기 전에, 게임 설정을 이 프로그램과 동기화해야 합니다:
-1. 게임을 테두리 없으므로 설정하세요.
-2. 화면 해상도와 게임 종횡비를 기억하세요.
-3. 이 도움말을 닫은 후, 오른쪽 위의 파일-&gt;설정에서 두 값을 확인하세요.
+스캔을 시작하기 전에, 게임 설정을 바꿔야 합니다:
+1. 직접 입력을 끄세요.
+2. 게임을 테두리 없으므로 설정하세요.
+3. 이 도움말을 닫은 후, 오른쪽 위의 파일-&gt;설정에서 해상도와 화면 비율을 확인하세요.
 4. 게임 언어를 영어로 설정해야 합니다. 한글은 지원되지 않습니다.
 
 스캔을 시작하려면 부적 페이지로 이동하여 선택된 부적을 "None"으로 설정하세요 (가장 첫 번째 부적).
@@ -148,7 +148,7 @@
     <value>종료</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>744, 296</value>
+    <value>754, 296</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -704,10 +704,10 @@
 </value>
   </data>
   <data name="$this.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>760, 335</value>
+    <value>770, 335</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>760, 335</value>
+    <value>770, 335</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>도움말</value>

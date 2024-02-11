@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddedCharm" xml:space="preserve">
+    <value>추가된 부적: {0} {1}</value>
+  </data>
   <data name="AlreadySamePlace" xml:space="preserve">
     <value>이미 선택된 부적에 있음</value>
+  </data>
+  <data name="FailedToDetectPosition" xml:space="preserve">
+    <value>위치 감지 실패</value>
+  </data>
+  <data name="NavigatingFrom" xml:space="preserve">
+    <value>지정된 위치로 부터 이동: {0}</value>
   </data>
   <data name="NavigatingTo" xml:space="preserve">
     <value>스캔 중지됨</value>
