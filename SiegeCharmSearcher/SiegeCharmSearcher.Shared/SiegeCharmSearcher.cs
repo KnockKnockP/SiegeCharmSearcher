@@ -1,67 +1,36 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
-using Tesseract;
 
 namespace SiegeCharmSearcher.Shared {
-    public class SiegeCharmSearcher {
+    public sealed class SiegeCharmSearcher {
         private readonly Process process;
-        public Settings settings = new();
-        
-        private const string blacklisted = "=[]\\;,./~!@#$%^&*()_+{}|:\"<>?[\n";
-        private readonly TesseractEngine tesseractEngine = new("./tessdata-4.1.0", "eng", EngineMode.TesseractAndLstm);
+        public Settings Settings { get; private set; } = new();
 
         public MarkableObservableCollection<Charm> charms = [];
 
         public SiegeCharmSearcher() {
+            process = FindProcess();
+            Settings = LoadOrCreateSettings();
+        }
+
+        private static Process FindProcess() {
             try {
                 WindowsWrapper.FindProcessOfNames(["RainbowSix_Vulkan"]);
                 throw new VulkanNotSupportedException();
-            } catch (ProcessNotFoundException) {}
+            } catch (ProcessNotFoundException) { }
 
-            process = WindowsWrapper.FindProcessOfNames(["RainbowSix"]);
+            return WindowsWrapper.FindProcessOfNames(["RainbowSix"]);
+        }
 
+        private static Settings LoadOrCreateSettings() {
             Settings? loaded = LoadSettings();
-            if (loaded == null) {
-                settings = new Settings {
-                    resolution = WindowsWrapper.GetResolution()
-                };
-            } else {
-                settings = loaded;
-            }
-        }
-
-        public void SaveSettings() {
-            if (settings == null) {
-                return;
-            }
-
-            FileManager.SaveAsJson(settings.SerializeAsJson(), FileManager.SettingsFilePath);
-        }
-
-        private static Settings? LoadSettings() {
-            Settings loaded = new();
-            try {
-                loaded.LoadFromJson(FileManager.ReadJson(FileManager.SettingsFilePath));
-            } catch (Exception) {
-                return null;
-            }
+            loaded ??= new Settings {
+                           Resolution = WindowsWrapper.GetResolution()
+                       };
             return loaded;
         }
 
-        private static bool AnalyzePresent(Screenshot screenshot) {
-            Color color = screenshot.presentImage.GetPixel(0, 0);
-            screenshot.presentColor = color;
-
-            byte maximum = 35;
-            return (MathHelper.InBetweenInclusive(color.R, 0, maximum) &&
-                    MathHelper.InBetweenInclusive(color.G, 0, maximum) &&
-                    MathHelper.InBetweenInclusive(color.B, 0, maximum));
-        }
-
-        public void StartAnalyzing(IProgress<Bitmap> analyzingNameImage,
-                                   IProgress<Bitmap> analyzingOwnedImage,
-                                   IProgress<Color> analyzingPresentColor,
-                                   IProgress<string> status,
+        public void StartAnalyzing(IProgress<AProgress> progress,
                                    IProgress<Charm> analyzedCharm,
                                    CancellationToken cancellationToken) {
             Vector2Int position = new(0, 0);
@@ -69,7 +38,7 @@ namespace SiegeCharmSearcher.Shared {
             void AddCharm(Charm charm) {
                 charms.Add(charm);
                 analyzedCharm.Report(charm);
-                status.Report(string.Format(Messages.AddedCharm, charm.name, charm.position));
+                progress.Report(new ProgressMessage(string.Format(Messages.AddedCharm, charm.Name, charm.Position)));
                 if (++position.x > 2) {
                     position.x = 0;
                     ++position.y;
@@ -81,145 +50,121 @@ namespace SiegeCharmSearcher.Shared {
             charms.Clear();
             WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
             while (!cancellationToken.IsCancellationRequested) {
-                status.Report(string.Empty);
-
+                Charm charm = new(position);
                 if (position == new Vector2Int(0, 0)) {
-                    AddCharm(new Charm() {
-                        name = Messages.NoneCharm,
-                        position = position
-                    });
+                    charm.Name = Messages.NoneCharm;
+                    AddCharm(charm);
                     continue;
                 }
 
-                Screenshot screenshot = new(settings.resolution);
-                screenshot.charm.position = position;
+                Screenshot screenshot = new(Settings.Resolution);
+                if (!AnalyzeCharmName(charm, screenshot, progress, cancellationToken)) {
+                    progress.Report(new ProgressMessage(Messages.Skipping));
 
-                screenshot.Capture();
-                analyzingNameImage.Report(screenshot.nameImage);
-                if (!AnalyzeCharmName(screenshot, status, cancellationToken)) {
-                    status.Report(Messages.Skipping);
-
-                    AddCharm(new Charm() {
-                        name = Messages.SkippedCharm,
-                        position = position
-                    });
+                    charm.Name = Messages.SkippedCharm;
+                    AddCharm(charm);
                     continue;
                 }
 
-                analyzingOwnedImage.Report(screenshot.ownedImage);
-                AnalyzeOwned(screenshot);
+                bool owned = screenshot.AnalyzeOwned();
+                progress.Report(new ProgressImage(screenshot.OwnedImage, AnalyzingImage.Owned));
 
-                analyzingPresentColor.Report(screenshot.presentColor);
-                bool isPresent = AnalyzePresent(screenshot);
+                (bool, Color) present = screenshot.AnalyzePresent();
+                progress.Report(new ProgressPresent(present.Item2));
 
-                if ((!screenshot.owned.Contains("OW", StringComparison.InvariantCultureIgnoreCase)) &&
-                    (!isPresent)) {
+                if ((!owned) && (!present.Item1)) {
                     break;
                 }
 
-                AddCharm(screenshot.charm);
+                AddCharm(charm);
             }
 
-            status.Report(Messages.StoppedAnalyzing);
+            progress.Report(new ProgressMessage(Messages.StoppedAnalyzing));
         }
 
-        private bool AnalyzeCharmName(Screenshot screenshot,
-                                      IProgress<string> status,
+        private bool AnalyzeCharmName(Charm charm,
+                                      Screenshot screenshot,
+                                      IProgress<AProgress> progress,
                                       CancellationToken cancellationToken) {
-            for (int i = 0; (i < 10 && (!cancellationToken.IsCancellationRequested)); ++i) {
-                screenshot.Capture();
-                using Page page = tesseractEngine.Process(screenshot.nameImage);
+            for (int i = 0; ((i < 10) && (!cancellationToken.IsCancellationRequested)); ++i) {
+                charm.Name = screenshot.AnalyzeName();
+                progress.Report(new ProgressImage(screenshot.NameImage, AnalyzingImage.Name));
 
-                string charmName = page.GetText().RemoveAllCharactersInString(blacklisted);
-                screenshot.charm.name = charmName;
-
-                page.Dispose();
-
-                if ((charmName.Length != 0) &&
-                    (!charmName.OnlyContains(' ')) &&
-                    ((charms.Count == 0) || (charmName != charms[^1].name))) {
+                if ((charm.Name.Length != 0) &&
+                    (!charm.Name.OnlyContains(' ')) &&
+                    ((charms.Count == 0) || (charm.Name != charms[^1].Name))) {
                     return true;
                 }
 
-                status.Report(string.Format(Messages.RetryCount, i));
-                Thread.Sleep(settings.delay);
+                progress.Report(new ProgressMessage(string.Format(Messages.RetryCount, i)));
+                Thread.Sleep(Settings.Delay);
             }
 
             return false;
         }
 
-        private void AnalyzeOwned(Screenshot screenshot) {
-            using Page page = tesseractEngine.Process(screenshot.ownedImage);
-
-            screenshot.owned = page.GetText().RemoveAllCharactersInString(blacklisted);
-            page.Dispose();
-        }
-
         public void NavigateTo(Charm charm,
                                Vector2Int? specifiedPosition,
-                               IProgress<string> status,
+                               IProgress<AProgress> progress,
                                CancellationToken cancellationToken) {
-            Charm? foundCharm = null;
-
-            status.Report(string.Format(Messages.NavigatingTo, charm.position));
+            progress.Report(new ProgressMessage(string.Format(Messages.NavigatingTo, charm.Position)));
             WindowsWrapper.BringWindowUpFront(process.MainWindowHandle);
-            Screenshot screenshot = new(settings.resolution);
 
+            Charm? standingOnCharm = null;
+            Screenshot screenshot = new(Settings.Resolution);
             if (specifiedPosition != null) {
-                foundCharm = new Charm() {
-                    position = specifiedPosition.Value
+                standingOnCharm = new Charm() {
+                    Position = specifiedPosition.Value
                 };
                 
-                status.Report(string.Format(Messages.NavigatingFrom, specifiedPosition));
+                progress.Report(new ProgressMessage(string.Format(Messages.NavigatingFrom, specifiedPosition)));
             }
 
-            while ((foundCharm == null) && (!cancellationToken.IsCancellationRequested)) {
-                bool foundName = AnalyzeCharmName(screenshot, status, cancellationToken);
+            if (standingOnCharm == null) {
+                standingOnCharm = new();
+                bool foundName = AnalyzeCharmName(standingOnCharm, screenshot, progress, cancellationToken);
 
-                string[] names = charms.Select(c => c.name).ToArray(),
-                         searched = SearchStrategies.LiteralSearchIgnoreSpaceWithoutSpaces(screenshot.charm.name, names);
+                string[] names = charms.Select(c => c.Name).ToArray(),
+                         searched = SearchStrategies.LiteralSearchIgnoreSpaceWithoutSpaces(standingOnCharm.Name, names);
                 if ((!foundName) || (searched == null) || (searched.Length == 0)) {
-                    status.Report(Messages.FailedToDetectPosition);
+                    progress.Report(new ProgressMessage(Messages.FailedToDetectPosition));
                     return;
                 }
                 foreach (Charm _charm in charms) {
-                    if (_charm.name == searched[0]) {
-                        foundCharm = _charm;
+                    if (_charm.Name == searched[0]) {
+                        standingOnCharm = _charm;
                         break;
                     }
                 }
 
-                status.Report(string.Format(Messages.StandingOn, foundCharm.name, foundCharm.position));
-                break;
+                progress.Report(new ProgressMessage(string.Format(Messages.StandingOn, standingOnCharm.Name, standingOnCharm.Position)));
             }
 
-            Vector2Int target = charm.position, current = foundCharm.position;
+            Vector2Int target = charm.Position, current = standingOnCharm.Position;
             if (target == current) {
-                status.Report(Messages.AlreadySamePlace);
+                progress.Report(new ProgressMessage(Messages.AlreadySamePlace));
                 return;
             }
 
-            if (target.x < current.x) {
-                while (target.x < current.x--) {
-                    SendKeyAndSleep(Direction.Left);
-                }
-            } else {
-                while (target.x > current.x++) {
-                    SendKeyAndSleep(Direction.Right);
-                }
+            while ((target.x < current.x) && (!cancellationToken.IsCancellationRequested)) {
+                SendKeyAndSleep(Direction.Left);
+                --current.x;
+            }
+            while ((target.x > current.x) && (!cancellationToken.IsCancellationRequested)) {
+                SendKeyAndSleep(Direction.Right);
+                ++current.x;
             }
 
-            if (target.y < current.y) {
-                while (target.y < current.y--) {
-                    SendKeyAndSleep(Direction.Up);
-                }
-            } else {
-                while (target.y > current.y++) {
-                    SendKeyAndSleep(Direction.Down);
-                }
+            while ((target.y < current.y) && (!cancellationToken.IsCancellationRequested)) {
+                SendKeyAndSleep(Direction.Up);
+                --current.y;
+            }
+            while ((target.y > current.y) && (!cancellationToken.IsCancellationRequested)) {
+                SendKeyAndSleep(Direction.Down);
+                ++current.y;
             }
 
-            status.Report(Messages.NavigationDone);
+            progress.Report(new ProgressMessage(Messages.NavigationDone));
         }
 
         //This is probably replacable with WH_JOURNALPLAYBACK but this will do for now.
@@ -239,15 +184,30 @@ namespace SiegeCharmSearcher.Shared {
                     break;
             }
 
-            Thread.Sleep(settings.delay);
+            Thread.Sleep(Settings.Delay);
         }
 
-        public void Save(string path) {
+        public void Save(string path) =>
             FileManager.SaveAsJson(charms.SerializeAsJson(), path);
+
+        public void Load(string path) => charms.LoadFromJson(path);
+
+        public void SaveSettings() {
+            if (Settings == null) {
+                return;
+            }
+
+            FileManager.SaveAsJson(Settings.SerializeAsJson(), FileManager.SettingsFilePath);
         }
 
-        public void Load(string path) {
-            charms.LoadFromJson(path);
+        private static Settings? LoadSettings() {
+            Settings loaded = new();
+            try {
+                loaded.LoadFromJson(FileManager.ReadJson(FileManager.SettingsFilePath));
+            } catch (Exception) {
+                return null;
+            }
+            return loaded;
         }
     }
 }

@@ -1,20 +1,18 @@
 ﻿using Newtonsoft.Json;
 
 namespace SiegeCharmSearcher.Shared {
-    public class Settings {
-        public Resolution resolution = new(new Vector2Int(1920, 1080), 60, AspectRatio._169);
-        public int delay = 500;
-        public bool hasSeenHelp = false;
+    public sealed class Settings {
+        public Resolution Resolution { get; set; } = new(new Vector2Int(1920, 1080), AspectRatio._169);
+        public int Delay { get; set; } = 500;
+        public bool HasSeenHelp { get; set; }
 
-        public string SerializeAsJson() {
-            return JsonConvert.SerializeObject(this);
-        }
+        public string SerializeAsJson() => JsonConvert.SerializeObject(this);
 
         public void LoadFromJson(string json) {
-            Settings? settings = JsonConvert.DeserializeObject<Settings>(json) ?? throw new BadSaveFileException();
-            resolution = settings.resolution;
-            delay = settings.delay;
-            hasSeenHelp = settings.hasSeenHelp;
+            Settings? settings = (JsonConvert.DeserializeObject<Settings>(json) ?? throw new BadSaveFileException());
+            Resolution = settings.Resolution;
+            Delay = settings.Delay;
+            HasSeenHelp = settings.HasSeenHelp;
         }
     }
 }

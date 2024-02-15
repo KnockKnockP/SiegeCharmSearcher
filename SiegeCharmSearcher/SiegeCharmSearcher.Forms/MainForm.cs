@@ -1,7 +1,7 @@
 using SiegeCharmSearcher.Shared;
 
 namespace SiegeCharmSearcher.Forms {
-    public partial class MainForm : Form {
+    internal sealed partial class MainForm : Form {
         const string fileDialogFilter = "JavaScript Object Notation|*.json";
 
         private readonly Shared.SiegeCharmSearcher siegeCharmSearcher;
@@ -14,9 +14,9 @@ namespace SiegeCharmSearcher.Forms {
                 selectedCharm = value;
 
                 if (selectedCharm != null) {
-                    charmNameInputBox.Text = selectedCharm.name;
-                    xInputBox.Text = selectedCharm.position.x.ToString();
-                    yInputBox.Text = selectedCharm.position.y.ToString();
+                    charmNameInputBox.Text = selectedCharm.Name;
+                    xInputBox.Text = selectedCharm.Position.x.ToString();
+                    yInputBox.Text = selectedCharm.Position.y.ToString();
                 } else {
                     charmNameInputBox.Text = string.Empty;
                 }
@@ -29,7 +29,7 @@ namespace SiegeCharmSearcher.Forms {
         private CancellationTokenSource analyzationCancelTokenSource = new(),
                                         navigationCancelTokenSource = new();
 
-        public MainForm() {
+        internal MainForm() {
             InitializeComponent();
 
             try {
@@ -48,7 +48,7 @@ namespace SiegeCharmSearcher.Forms {
                 Environment.Exit(0);
             }
 
-            if (!siegeCharmSearcher.settings.hasSeenHelp) {
+            if (!siegeCharmSearcher.Settings.HasSeenHelp) {
                 DisplayHelp();
             }
 
@@ -58,7 +58,7 @@ namespace SiegeCharmSearcher.Forms {
         }
 
         private void DisplayHelp() {
-            siegeCharmSearcher.settings.hasSeenHelp = true;
+            siegeCharmSearcher.Settings.HasSeenHelp = true;
             siegeCharmSearcher.SaveSettings();
 
             HelpForm helpForm = new();
@@ -66,11 +66,11 @@ namespace SiegeCharmSearcher.Forms {
         }
 
         private void AddCharm(Charm charm) {
-            charmsLists[charm.position.x].Items.Add(charm.name);
+            charmsLists[charm.Position.x].Items.Add(charm.Name);
         }
 
         private void ModifyCharm(Charm charm) {
-            charmsLists[charm.position.x].Items[charm.position.y] = charm.name;
+            charmsLists[charm.Position.x].Items[charm.Position.y] = charm.Name;
         }
 
         private void ClearCharms() {
@@ -88,17 +88,27 @@ namespace SiegeCharmSearcher.Forms {
                 statusLabel.Text = Messages.StartingAnalyzation;
                 ClearCharms();
 
-                IProgress<Bitmap> analyzingNameImage = new Progress<Bitmap>(bitmap => screenshotDisplay.Image = bitmap),
-                                  analyzingOwnedImage = new Progress<Bitmap>(bitmap => ownedImageDisplay.Image = bitmap);
-                IProgress<Color> analyzingPresentColor = new Progress<Color>(color => presentImageDisplay.BackColor = color);
-                IProgress<string> status = new Progress<string>(s => statusLabel.Text = s);
+                IProgress<AProgress> progress = new Progress<AProgress>(reported => {
+                    if (reported is ProgressMessage) {
+                        statusLabel.Text = ((ProgressMessage)(reported)).Message;
+                    } else if (reported is ProgressImage) {
+                        ProgressImage progressImage = (ProgressImage)(reported);
+                        switch (progressImage.AnalyzingImage) {
+                            case AnalyzingImage.Name:
+                                nameImage.Image = progressImage.Image;
+                                break;
+                            case AnalyzingImage.Owned:
+                                ownedImage.Image = progressImage.Image;
+                                break;
+                        }
+                    } else if (reported is ProgressPresent) {
+                        presentColor.BackColor = ((ProgressPresent)(reported)).Present;
+                    }
+                });
                 IProgress<Charm> analyzedCharm = new Progress<Charm>(AddCharm);
 
                 analyzationTask = Task.Factory.StartNew(() => {
-                    siegeCharmSearcher.StartAnalyzing(analyzingNameImage,
-                                                      analyzingOwnedImage,
-                                                      analyzingPresentColor,
-                                                      status,
+                    siegeCharmSearcher.StartAnalyzing(progress,
                                                       analyzedCharm,
                                                       analyzationCancelTokenSource.Token);
                 }, analyzationCancelTokenSource.Token);
@@ -124,7 +134,7 @@ namespace SiegeCharmSearcher.Forms {
 
             Charm? foundCharm = null;
             foreach (Charm charm in siegeCharmSearcher.charms) {
-                if (charm.name == selected.ToString()) {
+                if (charm.Name == selected.ToString()) {
                     foundCharm = charm;
                     break;
                 }
@@ -139,7 +149,7 @@ namespace SiegeCharmSearcher.Forms {
         private void SearchBoxChanged(object sender, EventArgs eventArgs) {
             string query = searchBox.Text;
             resultsList.Items.Clear();
-            List<string> charmNames = siegeCharmSearcher.charms.Select(c => c.name).ToList();
+            List<string> charmNames = siegeCharmSearcher.charms.Select(c => c.Name).ToList();
 
             void AddAndRemove(string result) {
                 resultsList.Items.Add(result);
@@ -174,11 +184,15 @@ namespace SiegeCharmSearcher.Forms {
                     specifiedPosition = new(int.Parse(navigationXInput.Text), int.Parse(navigationYInput.Text));
                 }
 
-                IProgress<string> status = new Progress<string>(s => statusLabel.Text = s);
+                IProgress<AProgress> progress = new Progress<AProgress>(reported => {
+                    if (reported is ProgressMessage) {
+                        statusLabel.Text = ((ProgressMessage)(reported)).Message;
+                    }
+                });
                 navigationTask = Task.Factory.StartNew(() => {
                     siegeCharmSearcher.NavigateTo(SelectedCharm,
                                                   specifiedPosition,
-                                                  status,
+                                                  progress,
                                                   navigationCancelTokenSource.Token);
                 }, navigationCancelTokenSource.Token);
 
@@ -238,8 +252,8 @@ namespace SiegeCharmSearcher.Forms {
             for (int i = 0; i < siegeCharmSearcher.charms.Count; ++i) {
                 if (siegeCharmSearcher.charms[i] == SelectedCharm) {
                     Charm charm = siegeCharmSearcher.charms[i];
-                    charm.name = charmNameInputBox.Text;
-                    charm.position = new Vector2Int(int.Parse(xInputBox.Text), int.Parse(yInputBox.Text));
+                    charm.Name = charmNameInputBox.Text;
+                    charm.Position = new Vector2Int(int.Parse(xInputBox.Text), int.Parse(yInputBox.Text));
                     ModifyCharm(charm);
                     siegeCharmSearcher.charms.MarkDirty();
                 }
@@ -253,17 +267,11 @@ namespace SiegeCharmSearcher.Forms {
 
         private void ShowHelpButtonClicked(object sender, EventArgs eventArgs) => DisplayHelp();
 
-        private void DetectPositionChecked(object sender, EventArgs eventArgs) {
-            detectPosition = true;
-        }
+        private void DetectPositionChecked(object sender, EventArgs eventArgs) => detectPosition = true;
 
-        private void SpecifyPositionChecked(object sender, EventArgs eventArgs) {
-            detectPosition = false;
-        }
+        private void SpecifyPositionChecked(object sender, EventArgs eventArgs) => detectPosition = false;
 
-        private void ExitButtonClick(object sender, EventArgs eventArgs) {
-            Application.Exit();
-        }
+        private void ExitButtonClick(object sender, EventArgs eventArgs) => Application.Exit();
 
         private void FormClosingPrompt(object sender, FormClosingEventArgs formClosingEventArgs) {
             if (!siegeCharmSearcher.charms.IsDirty) {

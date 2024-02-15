@@ -1,6 +1,12 @@
 ﻿namespace SiegeCharmSearcher.Shared {
-    public class Charm {
-        public string name = string.Empty;
-        public Vector2Int position = new(0, 0);
+    public sealed class Charm {
+        public string Name { get; set; } = string.Empty;
+        public Vector2Int Position { get; set; }
+
+        public Charm() {}
+
+        public Charm(string name) => Name = name;
+
+        public Charm(Vector2Int position) => Position = position;
     }
 }

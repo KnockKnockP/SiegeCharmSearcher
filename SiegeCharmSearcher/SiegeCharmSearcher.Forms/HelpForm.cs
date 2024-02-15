@@ -1,8 +1,6 @@
 ﻿namespace SiegeCharmSearcher.Forms {
-    public partial class HelpForm : Form {
-        public HelpForm() {
-            InitializeComponent();
-        }
+    internal sealed partial class HelpForm : Form {
+        internal HelpForm() => InitializeComponent();
 
         private void OkButtonClick(object sender, EventArgs eventArgs) => Close();
 

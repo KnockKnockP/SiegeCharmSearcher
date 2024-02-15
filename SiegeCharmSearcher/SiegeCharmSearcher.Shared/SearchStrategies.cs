@@ -1,12 +1,7 @@
 ﻿namespace SiegeCharmSearcher.Shared {
     public static class SearchStrategies {
-        private static bool ContainsIgnoreCase(this string s, char c) {
-            return s.Contains(c, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        private static bool ContainsIgnoreCase(this string s, string s2) {
-            return s.Contains(s2, StringComparison.InvariantCultureIgnoreCase);
-        }
+        private static bool ContainsIgnoreCase(this string s, string s2) =>
+            s.Contains(s2, StringComparison.InvariantCultureIgnoreCase);
 
         public static string[] LiteralSearchIgnoreCase(string query, string[] searchFrom) {
             List<string> results = [];
